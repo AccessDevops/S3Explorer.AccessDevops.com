@@ -116,6 +116,27 @@
       }
     }
 
+    .video-section {
+      margin-bottom: 3rem;
+    }
+
+    .video-section h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .video-section video {
+      width: 100%;
+      max-width: 720px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
     .providers {
       display: flex;
       justify-content: center;
@@ -158,6 +179,14 @@
     <div class="logo">☁️</div>
     <h1>S3 Explorer</h1>
     <p class="tagline">The modern desktop app for S3-compatible storage</p>
+
+    <div class="video-section">
+      <h2>Working Progress - Here is a demonstration</h2>
+      <video controls preload="metadata">
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
     <div class="badge">Soon Available</div>
 
