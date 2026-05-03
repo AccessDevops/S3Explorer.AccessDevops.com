@@ -1,13 +1,18 @@
 [build]
-  # `nuxt build` (not `generate`) so Nitro auto-detects Netlify and deploys
-  # server endpoints (server/api/*) as Netlify Functions. Static pages
-  # listed in nuxt.config.ts → nitro.prerender.routes are still pre-rendered
-  # at build time. Hybrid model: fast static pages + working API routes.
+  # `nuxt build` (not `generate`) so Nitro deploys server endpoints
+  # (server/api/*) as Netlify Functions. Static pages listed in
+  # nuxt.config.ts → nitro.prerender.routes are still pre-rendered.
+  # Hybrid model: fast static pages + working API routes.
   command = "npm run build"
-  publish = "dist/public"
+  publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "20"
+  # Force the Netlify preset explicitly. Nitro normally auto-detects via
+  # NETLIFY=true, but we set it here defensively so the build can never
+  # silently fall back to the generic Node preset (which would skip the
+  # _redirects + functions wiring).
+  NITRO_PRESET = "netlify"
 
 [[redirects]]
   from = "https://www.s3explorer.accessdevops.com/*"
