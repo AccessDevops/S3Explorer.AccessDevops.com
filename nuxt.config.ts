@@ -94,29 +94,23 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      // /buy doesn't depend on GitHub releases — keep it prerendered for
-      // max perf + SEO on this conversion page. / and /news depend on the
-      // releases list and need to render dynamically (see routeRules below).
-      routes: ['/buy'],
+      // Keep / and /news prerendered for now: rendering them as SSR via
+      // Netlify Function blows past the Lambda file-descriptor limit because
+      // @phosphor-icons/vue ships thousands of per-icon .vue.mjs files and
+      // they're all loaded during cold start (EMFILE). Until we bundle the
+      // icon imports into a single chunk on the server side, prerender is
+      // the only option that works. /buy already had no release dependency,
+      // unchanged.
+      routes: ['/', '/buy', '/news'],
     },
   },
 
   routeRules: {
-    // ISR (Incremental Static Regeneration) on Netlify: edge cache for 60s
-    // with stale-while-revalidate. 99% of visitors get an instant edge hit;
-    // the first request after expiry triggers a background regen, and
-    // subsequent requests during that regen still get the stale cached HTML.
-    // Net effect: a new GitHub release is reflected on the site within
-    // ~60s (ISR window) + ~60s (API cache below) = ~2 min worst case,
-    // without any rebuild needed. See:
-    // https://developers.netlify.com/guides/isr-and-advanced-caching-with-nuxt-v4-on-netlify/
-    '/': { isr: 60 },
-    '/news': { isr: 60 },
-
-    // In-memory cache + SWR on the releases endpoint to avoid hammering
-    // the GitHub API (60 req/h anonymous, 5000/h authenticated).
-    // Replaces the disk-backed defineCachedEventHandler that was producing
-    // stale entries surviving across builds via integrity-keyed invalidation.
+    // In-memory cache + SWR on the releases endpoint. Replaces the
+    // disk-backed defineCachedEventHandler whose integrity-keyed entries
+    // were surviving across builds and serving stale data (a v0.2.2
+    // snapshot persisted after v0.3.0 was published). Memory cache means
+    // every fresh build starts with a clean slate.
     '/api/releases': { cache: { maxAge: 60, swr: true } },
   },
 
