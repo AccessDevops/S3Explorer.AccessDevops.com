@@ -23,7 +23,18 @@ interface RawRelease {
   }>
 }
 
-export default defineCachedEventHandler(async () => {
+// Caching is handled by routeRules in nuxt.config.ts:
+//   '/api/releases': { cache: { maxAge: 60, swr: true } }
+//
+// We deliberately do NOT use defineCachedEventHandler here. Its disk-backed
+// cache (.nuxt/cache/nitro/handlers/<name>/*.json) uses an integrity hash
+// of the handler code as the invalidation key — which means a stale entry
+// stays "valid" forever as long as the handler code is unchanged, even past
+// `maxAge`. We hit this in production: a v0.2.2 snapshot survived after
+// v0.3.0 was published and the site kept showing v0.2.2 across builds.
+// routeRules-based caching uses Nitro's in-memory storage, no integrity
+// trickery, no surviving artifacts between builds.
+export default defineEventHandler(async () => {
   const headers: Record<string, string> = {
     'Accept': 'application/vnd.github+json',
     'User-Agent': 'S3Explorer-Website',
@@ -39,10 +50,5 @@ export default defineCachedEventHandler(async () => {
     { headers },
   )
 
-  // Filter drafts here so cached payload is smaller and clients can't
-  // accidentally surface drafts.
   return data.filter(r => !r.draft)
-}, {
-  maxAge: 300,
-  name: 'github-releases',
 })

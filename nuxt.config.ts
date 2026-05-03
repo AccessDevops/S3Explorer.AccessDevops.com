@@ -94,8 +94,30 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      routes: ['/', '/buy', '/news'],
+      // /buy doesn't depend on GitHub releases — keep it prerendered for
+      // max perf + SEO on this conversion page. / and /news depend on the
+      // releases list and need to render dynamically (see routeRules below).
+      routes: ['/buy'],
     },
+  },
+
+  routeRules: {
+    // ISR (Incremental Static Regeneration) on Netlify: edge cache for 60s
+    // with stale-while-revalidate. 99% of visitors get an instant edge hit;
+    // the first request after expiry triggers a background regen, and
+    // subsequent requests during that regen still get the stale cached HTML.
+    // Net effect: a new GitHub release is reflected on the site within
+    // ~60s (ISR window) + ~60s (API cache below) = ~2 min worst case,
+    // without any rebuild needed. See:
+    // https://developers.netlify.com/guides/isr-and-advanced-caching-with-nuxt-v4-on-netlify/
+    '/': { isr: 60 },
+    '/news': { isr: 60 },
+
+    // In-memory cache + SWR on the releases endpoint to avoid hammering
+    // the GitHub API (60 req/h anonymous, 5000/h authenticated).
+    // Replaces the disk-backed defineCachedEventHandler that was producing
+    // stale entries surviving across builds via integrity-keyed invalidation.
+    '/api/releases': { cache: { maxAge: 60, swr: true } },
   },
 
   sitemap: {
