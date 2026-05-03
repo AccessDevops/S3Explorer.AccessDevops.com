@@ -1,6 +1,10 @@
 [build]
-  command = "npm run generate"
-  publish = "dist"
+  # `nuxt build` (not `generate`) so Nitro auto-detects Netlify and deploys
+  # server endpoints (server/api/*) as Netlify Functions. Static pages
+  # listed in nuxt.config.ts → nitro.prerender.routes are still pre-rendered
+  # at build time. Hybrid model: fast static pages + working API routes.
+  command = "npm run build"
+  publish = "dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
