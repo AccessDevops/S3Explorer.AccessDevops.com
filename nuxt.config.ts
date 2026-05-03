@@ -1,0 +1,97 @@
+export default defineNuxtConfig({
+  compatibilityDate: '2025-07-15',
+  devtools: { enabled: true },
+
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/sitemap',
+    '@posthog/nuxt',
+  ],
+
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+      extensions: ['vue'],
+      ignore: ['**/ui/**'],
+    },
+  ],
+
+  tailwindcss: {
+    cssPath: '~/assets/css/main.css',
+    configPath: 'tailwind.config.js',
+  },
+
+  posthogConfig: {
+    publicKey: process.env.POSTHOG_PUBLIC_KEY || '',
+    host: 'https://eu.i.posthog.com',
+    clientConfig: {
+      capture_pageview: true,
+      capture_pageleave: true,
+      persistence: 'localStorage+cookie',
+    },
+  },
+
+  site: {
+    url: 'https://s3explorer.accessdevops.com',
+    name: 'S3 Explorer',
+  },
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      title: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Browse buckets, upload and download files, edit text, preview images and videos. Smart local indexing for ultra-fast navigation across millions of objects. Available on Windows, macOS, and Linux.' },
+        // Theme color matches the dark mode background; light mode browsers
+        // will render the chrome in their own neutral color.
+        { name: 'theme-color', content: '#020817', media: '(prefers-color-scheme: dark)' },
+        { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
+        { name: 'apple-mobile-web-app-title', content: 'S3 Explorer' },
+        // Microsoft / Windows tiles
+        { name: 'msapplication-TileColor', content: '#2563eb' },
+        { name: 'msapplication-TileImage', content: '/android-chrome-192x192.png' },
+        { name: 'msapplication-config', content: 'none' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
+        { property: 'og:title', content: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage' },
+        { property: 'og:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation. Windows, macOS & Linux.' },
+        { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage' },
+        { name: 'twitter:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation.' },
+        { name: 'twitter:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
+      ],
+      link: [
+        // Favicons — multiple sizes so browsers and crawlers (Google
+        // included, which favors multiples of 48) pick the best fit.
+        // /favicon.ico at the root path is a fallback for legacy crawlers
+        // and IE-era browsers that don't read <link rel="icon">.
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48x48.png' },
+        { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-chrome-192x192.png' },
+        { rel: 'icon', type: 'image/png', sizes: '512x512', href: '/android-chrome-512x512.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'dns-prefetch', href: 'https://api.github.com' },
+        { rel: 'dns-prefetch', href: 'https://github.com' },
+      ],
+    },
+  },
+
+  ssr: true,
+
+  nitro: {
+    prerender: {
+      routes: ['/', '/buy', '/news'],
+    },
+  },
+
+  sitemap: {
+    urls: ['/', '/buy', '/news'],
+  },
+})

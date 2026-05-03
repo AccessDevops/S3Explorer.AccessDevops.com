@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow:
+
+Sitemap: https://s3explorer.accessdevops.com/sitemap.xml

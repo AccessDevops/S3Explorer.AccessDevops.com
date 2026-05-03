@@ -1,0 +1,28 @@
+{
+  "name": "S3 Explorer",
+  "short_name": "S3 Explorer",
+  "description": "The modern desktop app for S3-compatible storage",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#020817",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

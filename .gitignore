@@ -1,24 +1,166 @@
-# Nuxt dev/build outputs
+# =============================================================================
+# Build outputs — regenerated on every build, never commit
+# =============================================================================
+
+# Nuxt 4 / Nitro
 .output
-.data
 .nuxt
 .nitro
 .cache
+.data
 dist
 
-# Node dependencies
+# TypeScript incremental build cache
+*.tsbuildinfo
+
+# Vite
+.vite
+
+# =============================================================================
+# Dependencies — installed via `npm install`, never commit (huge + redundant)
+# =============================================================================
+
 node_modules
+.pnpm-store
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Logs
-logs
-*.log
+# =============================================================================
+# Environment variables & secrets — CRITICAL
+# `.env*` blocks every variant (.env, .env.local, .env.production, etc.).
+# `.env.example` is whitelisted with `!` so the template stays committed.
+# =============================================================================
 
-# Misc
-.DS_Store
-.fleet
-.idea
-
-# Local env files
 .env
 .env.*
 !.env.example
+
+# Other common secret formats (defensive — should never appear here, but if
+# someone drops a keypair or a credentials file, git won't accept it)
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# =============================================================================
+# Lint / test caches
+# =============================================================================
+
+.eslintcache
+.stylelintcache
+coverage
+.nyc_output
+
+# =============================================================================
+# Deploy CLI local state — auth tokens & site links
+# (We don't run these locally, but if anyone does, their state stays out)
+# =============================================================================
+
+.netlify
+.vercel
+.firebase
+
+# =============================================================================
+# Logs (Nuxt devserver, npm, build) — local debugging artifacts
+# =============================================================================
+
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =============================================================================
+# OS-specific junk
+# =============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.Trash-*
+
+# =============================================================================
+# Editor / IDE — user-local, not part of the project
+# =============================================================================
+
+# VS Code
+.vscode
+!.vscode/settings.json     # whitelist if you want to share workspace settings
+!.vscode/extensions.json   # whitelist recommended extensions
+!.vscode/launch.json       # whitelist debug configs
+
+# JetBrains (WebStorm, IntelliJ, etc.)
+.idea
+*.iml
+*.iws
+*.ipr
+
+# Sublime, Vim, Emacs
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+.\#*
+\#*\#
+.history
+
+# Fleet
+.fleet
+
+# Zed
+.zed
+
+# =============================================================================
+# Project-specific — Claude Code local state and other one-off tools
+# =============================================================================
+
+# Per-user Claude Code config (permissions, scopes). Each dev has their own.
+.claude/settings.local.json
+.claude/sessions
+.claude/projects
+.claude/file-history
+
+# Note: asset-generator.html is INTENTIONALLY tracked. It's a self-contained
+# 101 KB HTML tool with the public app icon base64-inlined to regenerate
+# og-images / favicons / PWA icons. No secrets inside (verified).
+
+# =============================================================================
+# Random temp files
+# =============================================================================
+
+tmp
+.tmp
+*.tmp
+*.bak
+*.orig
+
+# =============================================================================
+# DO commit (just being explicit about a few easy-to-confuse cases)
+# =============================================================================
+# - .env.example  → committed (template for env vars)
+# - package-lock.json → committed (deterministic install)
+# - public/ → committed (static assets served by Nuxt)
+# - .gitignore (this file) → committed

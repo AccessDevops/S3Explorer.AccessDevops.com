@@ -1,0 +1,33 @@
+{
+  "name": "s3explorer-accessdevops-com",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@phosphor-icons/vue": "^2.2.1",
+    "@posthog/nuxt": "^1.5.89",
+    "@vueuse/core": "^11.3.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "marked": "^15.0.7",
+    "nuxt": "^4.4.2",
+    "posthog-node": "^4.18.0",
+    "reka-ui": "^2.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/sitemap": "^7.6.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.3"
+  }
+}
