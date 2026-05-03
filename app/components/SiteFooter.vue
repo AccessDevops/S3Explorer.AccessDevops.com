@@ -37,7 +37,7 @@ const year = new Date().getFullYear()
           <h3 class="text-sm font-semibold">Resources</h3>
           <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
             <li>
-              <a :href="REPO.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-foreground">
+              <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-foreground">
                 <PhGithubLogo :size="14" /> GitHub
               </a>
             </li>

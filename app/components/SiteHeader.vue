@@ -66,8 +66,8 @@ const nav = [
           <PhSun v-if="isDark" :size="18" />
           <PhMoon v-else :size="18" />
         </Button>
-        <Button variant="ghost" size="icon-sm" as-child aria-label="GitHub repository">
-          <a :href="REPO.url" target="_blank" rel="noopener noreferrer">
+        <Button variant="ghost" size="icon-sm" as-child aria-label="GitHub releases">
+          <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer">
             <PhGithubLogo :size="18" />
           </a>
         </Button>

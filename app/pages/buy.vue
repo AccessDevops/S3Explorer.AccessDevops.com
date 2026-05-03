@@ -16,7 +16,6 @@ import { useBuyStructuredData } from '~/composables/useStructuredData'
 const SITE_BASE_URL = SITE.domain
 
 const { trackPageView, trackBuyCtaClicked } = useDownloadTracking()
-const route = useRoute()
 
 useSeoMeta({
   title: 'Get a License — S3 Explorer',
@@ -30,13 +29,20 @@ useSeoMeta({
 
 // Source attribution: distinguishes organic visits from desktop nag popup redirects
 // (the desktop app sends users to /buy?source=desktop_nag).
-const trafficSource = computed<string>(() => {
-  const raw = route.query.source
-  if (typeof raw !== 'string') return 'organic'
-  // whitelist to avoid junk values polluting PostHog
-  if (['desktop_nag', 'desktop_settings', 'email', 'social'].includes(raw)) return raw
-  return raw.slice(0, 32) // truncate any unknown to 32 chars
-})
+//
+// `/buy` is prerendered, so `useRoute().query` is empty during the first hydration
+// tick — reading it in onMounted would tag `website_visited` as `organic` even when
+// the URL says `?source=desktop_nag`. We seed from `window.location.search` instead,
+// the only reliable source on a prerendered page.
+const ALLOWED_SOURCES = ['desktop_nag', 'desktop_settings', 'email', 'social']
+
+function normalizeSource(raw: string | null | undefined): string {
+  if (typeof raw !== 'string' || raw.length === 0) return 'organic'
+  if (ALLOWED_SOURCES.includes(raw)) return raw
+  return raw.slice(0, 32)
+}
+
+const trafficSource = ref<string>('organic')
 
 // Referral ID persisted at download_clicked on the home page. We pipe it through
 // to Lemon Squeezy via custom_data so the order webhook can identify the same
@@ -44,6 +50,8 @@ const trafficSource = computed<string>(() => {
 const referralId = ref<string | null>(null)
 
 onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  trafficSource.value = normalizeSource(params.get('source'))
   referralId.value = readPersistedReferralId()
   trackPageView('buy', { source: trafficSource.value })
 })
