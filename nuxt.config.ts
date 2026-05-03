@@ -24,8 +24,15 @@ export default defineNuxtConfig({
 
   posthogConfig: {
     publicKey: process.env.POSTHOG_PUBLIC_KEY || '',
-    host: 'https://eu.i.posthog.com',
+    // Reverse proxy via our own domain — bypasses adblockers that filter
+    // *.posthog.com. The Netlify redirects in netlify.toml rewrite this
+    // path to eu.i.posthog.com on the edge.
+    host: 'https://s3explorer.accessdevops.com/relay-Bn3Q',
     clientConfig: {
+      // Where the PostHog dashboard actually lives. Used by posthog-js to
+      // construct "View in PostHog" links (e.g. in dev tools / replays).
+      // Without this, those links would point at our proxy URL.
+      ui_host: 'https://eu.posthog.com',
       capture_pageview: true,
       capture_pageleave: true,
       persistence: 'localStorage+cookie',

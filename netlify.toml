@@ -18,6 +18,29 @@
   # functions wiring).
   NITRO_PRESET = "netlify"
 
+# PostHog reverse proxy. Routes /relay-Bn3Q/* through our own domain so
+# adblockers (uBlock Origin, Brave Shields, Firefox Strict, NextDNS, etc.)
+# don't filter analytics traffic the way they do for *.posthog.com.
+# PostHog's recommended pattern; the random-looking suffix in the path
+# makes it harder for filter lists to target a generic /relay-* rule.
+# Static assets and the API are on different PostHog subdomains, hence
+# two rules. force=true ensures the rewrite always fires regardless of
+# whether a static file exists at the path.
+#
+# IMPORTANT: these MUST come before the /* → function catch-all below,
+# otherwise Netlify routes the proxy paths into the Nitro function.
+[[redirects]]
+  from = "/relay-Bn3Q/static/*"
+  to = "https://eu-assets.i.posthog.com/static/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/relay-Bn3Q/*"
+  to = "https://eu.i.posthog.com/:splat"
+  status = 200
+  force = true
+
 # Route every non-static path to the Nitro server function. Netlify checks
 # the redirects AFTER trying to serve a static file from `publish`, so
 # pre-rendered routes (/, /buy/, /news/) and asset URLs hit the CDN directly
