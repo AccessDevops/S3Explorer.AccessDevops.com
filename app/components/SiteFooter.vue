@@ -52,20 +52,19 @@ const year = new Date().getFullYear()
 
       <div class="mt-10 flex flex-col items-start justify-between gap-2 border-t border-border/50 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
         <p>&copy; {{ year }} AccessDevops. All rights reserved.</p>
+        <p>
+          made with ❤️ by
+          <a
+            href="https://cbarange.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-blue-600 transition-colors hover:text-blue-700"
+          >
+            cbarange
+          </a>
+        </p>
         <p>Made with care for developers and ops teams.</p>
       </div>
-
-      <p class="mt-4 text-center text-xs text-muted-foreground">
-        made with ❤️ by
-        <a
-          href="https://cbarange.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:text-foreground"
-        >
-          cbarange
-        </a>
-      </p>
     </div>
   </footer>
 </template>
