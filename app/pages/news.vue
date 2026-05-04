@@ -8,7 +8,7 @@ import { REPO } from '~/lib/constants'
 import { useNewsStructuredData } from '~/composables/useStructuredData'
 
 const { releases, loading, error } = useNews()
-const { trackNewsViewed } = useDownloadTracking()
+const { trackPageView, trackNewsViewed } = useDownloadTracking()
 
 // Inject Blog + BlogPosting[] + BreadcrumbList JSON-LD. Reactive — updates
 // whenever the GitHub releases feed refreshes.
@@ -25,6 +25,11 @@ useSeoMeta({
 })
 
 onMounted(() => {
+  // Two events on /news entry:
+  //   - website_visited (page=news, source=…) — feeds the unified "traffic by
+  //     page" + "traffic by source" tiles on the Overview dashboard.
+  //   - news_page_viewed — kept for backward compat with existing insights.
+  trackPageView('news')
   trackNewsViewed()
 })
 

@@ -45,13 +45,57 @@ export function readPersistedReferralId(): string | null {
   }
 }
 
+// Classifies how the visitor reached the site, in a small bucket vocabulary
+// that's stable across pages so PostHog breakdowns are meaningful. Order
+// matters: explicit `?source=` query param (set by the desktop nag popup,
+// emails, etc.) wins over UTM, which wins over inferred referrer.
+//
+// SSR-safe: returns 'unknown' if window is not available. Callers should
+// invoke this from onMounted or later.
+function classifyTrafficSource(): string {
+  if (typeof window === 'undefined') return 'unknown'
+
+  const params = new URLSearchParams(window.location.search)
+  const explicit = params.get('source')
+  if (explicit) {
+    if (['desktop_nag', 'desktop_settings', 'email', 'social'].includes(explicit)) return explicit
+    return explicit.slice(0, 32) // truncate junk values defensively
+  }
+
+  const utm = params.get('utm_source')
+  if (utm) {
+    const lower = utm.toLowerCase()
+    if (lower.includes('google')) return 'google'
+    if (['facebook', 'twitter', 'x', 'linkedin', 'instagram', 'reddit', 'youtube'].some(s => lower.includes(s))) return 'social'
+    if (lower === 'newsletter' || lower.includes('email') || lower.includes('mail')) return 'email'
+    return utm.slice(0, 32)
+  }
+
+  const ref = (document.referrer || '').toLowerCase()
+  if (!ref) return 'direct'
+  try {
+    const host = new URL(ref).hostname
+    if (host.includes('google.')) return 'google'
+    if (host === 's3explorer.accessdevops.com' || host === 'www.s3explorer.accessdevops.com') return 'internal'
+    if (['facebook.com', 'twitter.com', 'x.com', 'linkedin.com', 'instagram.com', 'reddit.com', 'youtube.com', 't.co', 'l.instagram.com'].some(s => host.endsWith(s))) return 'social'
+    if (['news.ycombinator.com', 'producthunt.com', 'github.com'].some(s => host.endsWith(s))) return 'referral'
+    return 'referral'
+  } catch {
+    return 'direct'
+  }
+}
+
 export function useDownloadTracking() {
   const posthog = usePostHog()
   const clipboardCopied = ref(false)
   const referralId = ref('')
 
   function trackPageView(page: string = 'landing', extraProps: Record<string, unknown> = {}) {
-    posthog?.capture('website_visited', { page, ...extraProps })
+    // Auto-attach a `source` bucket when the caller didn't provide one,
+    // so PostHog breakdowns by source on website_visited aren't ~80% null.
+    // /buy already passes its own `source` (from the URL query) — that wins.
+    const source = (extraProps as { source?: string }).source ?? classifyTrafficSource()
+    posthog?.capture('website_visited', { page, source, ...extraProps })
   }
 
   function trackPlatformDetected(platform: string) {
