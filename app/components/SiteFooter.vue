@@ -54,6 +54,18 @@ const year = new Date().getFullYear()
         <p>&copy; {{ year }} AccessDevops. All rights reserved.</p>
         <p>Made with care for developers and ops teams.</p>
       </div>
+
+      <p class="mt-4 text-center text-xs text-muted-foreground">
+        made with ❤️ by
+        <a
+          href="https://cbarange.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-foreground"
+        >
+          cbarange
+        </a>
+      </p>
     </div>
   </footer>
 </template>

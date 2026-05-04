@@ -33,6 +33,17 @@ export function useReleases(options: UseReleasesOptions = {}) {
   const { data, status, error, refresh } = useFetch<Release[]>('/api/releases', {
     key: 'github-releases',
     default: () => [] as Release[],
+    // Force refresh() to actually hit /api/releases on the client. The default
+    // getCachedData returns nuxtApp.payload.data[key] while isHydrating is true
+    // and short-circuits the refresh, so a prerendered page would never see new
+    // releases until the next deploy. Verified empirically: zero /api/releases
+    // requests fired on home cold load before this override.
+    // - 'initial' / undefined cause: serve the prerendered payload (fast hydration).
+    // - 'refresh:manual' / 'refresh:hook' cause: return undefined → real fetch.
+    getCachedData: (key, nuxtApp, { cause }) => {
+      if (cause === 'refresh:manual' || cause === 'refresh:hook') return undefined
+      return nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+    },
   })
 
   const releases = computed(() =>
