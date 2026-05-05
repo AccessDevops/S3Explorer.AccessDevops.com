@@ -79,18 +79,18 @@ export function buildCheckoutUrl(
 export const PRICING = {
   free: {
     label: 'Free',
-    price: '€0',
+    price: '0 €',
     cadence: 'forever',
     profileLimit: 5,
   },
   monthly: {
     label: 'Monthly',
-    price: '€1.99',
+    price: '1,99 €',
     cadence: '/month',
   },
   lifetime: {
     label: 'Lifetime',
-    price: '€11.50',
+    price: '11,50 €',
     cadence: 'one-time',
     badge: 'Best value',
   },

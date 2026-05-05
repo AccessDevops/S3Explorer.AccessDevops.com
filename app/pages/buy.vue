@@ -19,9 +19,9 @@ const { trackPageView, trackBuyCtaClicked } = useDownloadTracking()
 
 useSeoMeta({
   title: 'Get a License — S3 Explorer',
-  description: 'Support S3 Explorer development and unlock unlimited connection profiles. €11.50 lifetime or €1.99 per month. The app remains free without a license.',
+  description: 'Support S3 Explorer development and unlock unlimited connection profiles. 11,50 € lifetime or 1,99 € per month. The app remains free without a license.',
   ogTitle: 'Get a License — S3 Explorer',
-  ogDescription: 'Support S3 Explorer development. €11.50 lifetime or €1.99/month. The app stays free.',
+  ogDescription: 'Support S3 Explorer development. 11,50 € lifetime or 1,99 €/month. The app stays free.',
   ogUrl: 'https://s3explorer.accessdevops.com/buy',
   ogImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
   twitterImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
@@ -82,7 +82,7 @@ const tiers = computed(() => [
   {
     key: 'free' as const,
     name: 'Free',
-    price: '€0',
+    price: '0 €',
     cadence: 'Forever',
     description: 'Full app, ready to use. Forever.',
     features: [
@@ -99,7 +99,7 @@ const tiers = computed(() => [
   {
     key: 'monthly' as const,
     name: 'Monthly',
-    price: '€1.99',
+    price: '1,99 €',
     cadence: 'Per month, cancel anytime',
     description: 'Subscribe to support continuous development.',
     features: [
@@ -115,7 +115,7 @@ const tiers = computed(() => [
   {
     key: 'lifetime' as const,
     name: 'Lifetime',
-    price: '€11.50',
+    price: '11,50 €',
     cadence: 'One-time payment',
     description: 'Pay once, use forever. The simplest way to support.',
     features: [
@@ -172,7 +172,7 @@ const faqs = [
   },
   {
     q: 'Monthly vs lifetime: which one should I pick?',
-    a: 'At €11.50, the lifetime license is essentially a tip with permanent benefits. The monthly option exists for people who prefer subscriptions or want to test the waters first.',
+    a: 'At 11,50 €, the lifetime license is essentially a tip with permanent benefits. The monthly option exists for people who prefer subscriptions or want to test the waters first.',
   },
   {
     q: 'Will the price increase later?',
