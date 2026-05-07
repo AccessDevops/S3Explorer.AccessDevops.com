@@ -67,7 +67,7 @@ export function useHomeStructuredData(version: string) {
             'priceCurrency': 'EUR',
             'description': 'Unlimited profiles, no reminder popup, one-time payment, up to 5 active devices.',
             'availability': 'https://schema.org/InStock',
-            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/2c0aba4d-fd2e-4f40-a8a8-f3b7af1892b9',
+            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/918b4b1f-bc7b-430b-8b65-05cef8abc472',
           },
           {
             '@type': 'Offer',
@@ -76,7 +76,7 @@ export function useHomeStructuredData(version: string) {
             'priceCurrency': 'EUR',
             'description': 'Unlimited profiles, no reminder popup, billed monthly with 5-day free trial, up to 3 active devices.',
             'availability': 'https://schema.org/InStock',
-            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/859ffcff-6e2b-4c1a-9556-9e41d85df17c',
+            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/f613d0eb-54a7-4f6c-939f-d5d51739f9ab',
           },
         ],
         'featureList': [

@@ -3,13 +3,14 @@ import { PostHog } from 'posthog-node'
 
 const POSTHOG_HOST = 'https://eu.i.posthog.com'
 
-// Lemon Squeezy product/variant IDs — kept here (not in shared constants)
-// because the webhook is server-only and the IDs aren't sensitive but also
-// don't need to be in the client bundle.
-const LIFETIME_VARIANT_ID = 1417477
-const LIFETIME_PRODUCT_ID = 900999
-const MONTHLY_VARIANT_ID = 1417489
-const MONTHLY_PRODUCT_ID = 901011
+// Lemon Squeezy product/variant IDs (LIVE MODE — store moved to live on
+// 2026-05-07 via copyToLiveMode from the test mode catalog). Kept here
+// (not in shared constants) because the webhook is server-only and the
+// IDs aren't sensitive but also don't need to be in the client bundle.
+const LIFETIME_VARIANT_ID = 1623113
+const LIFETIME_PRODUCT_ID = 1034882
+const MONTHLY_VARIANT_ID = 1623111
+const MONTHLY_PRODUCT_ID = 1034880
 
 interface LemonAttributes {
   store_id?: number

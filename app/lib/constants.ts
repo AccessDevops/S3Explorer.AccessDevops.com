@@ -52,10 +52,10 @@ export const REPORT_ISSUE_URL
 
 export const LEMON_SQUEEZY = {
   storeUrl: 'https://s3explorer.lemonsqueezy.com',
-  // Monthly subscription — product 901011, variant 1417489
-  checkoutMonthly: 'https://s3explorer.lemonsqueezy.com/checkout/buy/859ffcff-6e2b-4c1a-9556-9e41d85df17c',
-  // Lifetime — product 900999, variant 1417477
-  checkoutLifetime: 'https://s3explorer.lemonsqueezy.com/checkout/buy/2c0aba4d-fd2e-4f40-a8a8-f3b7af1892b9',
+  // Monthly subscription — product 1034880, variant 1623111 (live mode)
+  checkoutMonthly: 'https://s3explorer.lemonsqueezy.com/checkout/buy/f613d0eb-54a7-4f6c-939f-d5d51739f9ab',
+  // Lifetime — product 1034882, variant 1623113 (live mode)
+  checkoutLifetime: 'https://s3explorer.lemonsqueezy.com/checkout/buy/918b4b1f-bc7b-430b-8b65-05cef8abc472',
 }
 
 // Append checkout custom_data to a Lemon Squeezy checkout URL so the values
