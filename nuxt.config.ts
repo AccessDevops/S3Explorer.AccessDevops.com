@@ -1,6 +1,19 @@
+import { DOCUMENTED_PROVIDER_IDS } from './app/lib/provider-content'
+
 // Evaluated once per build. Used as `lastmod` in the sitemap: these pages are
 // prerendered, so a rebuild is precisely when their content can change.
 const BUILD_TIME = new Date().toISOString()
+
+// Provider guides, derived from the single list of providers we have actually
+// written up. Adding an entry to provider-content.ts is therefore enough to
+// get the page prerendered AND listed in the sitemap — there is no second
+// place to remember to update.
+//
+// Prerendering these is not an optimisation, it is a requirement: rendering
+// them through the Netlify function hits the EMFILE ceiling described in the
+// `nitro.prerender` comment below, and these pages import the same icon
+// package that caused it.
+const PROVIDER_ROUTES = DOCUMENTED_PROVIDER_IDS.map(id => `/providers/${id}`)
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -146,7 +159,7 @@ export default defineNuxtConfig({
       // icon imports into a single chunk on the server side, prerender is
       // the only option that works. /buy already had no release dependency,
       // unchanged.
-      routes: ['/', '/buy', '/news'],
+      routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES],
     },
   },
 
@@ -172,6 +185,10 @@ export default defineNuxtConfig({
       { loc: '/', lastmod: BUILD_TIME },
       { loc: '/buy/', lastmod: BUILD_TIME },
       { loc: '/news/', lastmod: BUILD_TIME },
+      // Hub first, then one guide per documented provider. Dynamic routes are
+      // invisible to the module's auto-discovery, so they are listed here.
+      { loc: '/providers/', lastmod: BUILD_TIME },
+      ...PROVIDER_ROUTES.map(r => ({ loc: `${r}/`, lastmod: BUILD_TIME })),
     ],
   },
 })
