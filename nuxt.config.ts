@@ -83,6 +83,16 @@ export default defineNuxtConfig({
         // will render the chrome in their own neutral color.
         { name: 'theme-color', content: '#020817', media: '(prefers-color-scheme: dark)' },
         { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
+        // Bing Webmaster Tools site ownership. Bing re-checks this tag
+        // periodically, not just once — removing it revokes access to the
+        // search performance data. Google's equivalent is the static file
+        // public/google79cda1e6e473c205.html.
+        //
+        // This matters more here than it looks: Bing and DuckDuckGo (same
+        // index) account for roughly 60% of the site's traffic, against six
+        // visitors from Google in five months. This console is the only place
+        // that shows which queries actually bring those people in.
+        { name: 'msvalidate.01', content: '389CE3BD52C38ADCCF3E38D0262AC140' },
         { name: 'apple-mobile-web-app-title', content: 'S3 Explorer' },
         // Microsoft / Windows tiles
         { name: 'msapplication-TileColor', content: '#2563eb' },
