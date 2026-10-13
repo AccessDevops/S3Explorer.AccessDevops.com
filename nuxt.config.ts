@@ -1,3 +1,7 @@
+// Evaluated once per build. Used as `lastmod` in the sitemap: these pages are
+// prerendered, so a rebuild is precisely when their content can change.
+const BUILD_TIME = new Date().toISOString()
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -42,11 +46,34 @@ export default defineNuxtConfig({
   site: {
     url: 'https://s3explorer.accessdevops.com',
     name: 'S3 Explorer',
+    // Netlify answers 200 on `/buy/` and 301s `/buy` to it. Telling the SEO
+    // modules so keeps the sitemap on the same URLs as the canonical in
+    // app/app.vue — otherwise @nuxtjs/sitemap normalises the slash away and
+    // advertises URLs that redirect.
+    trailingSlash: true,
   },
 
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
+      script: [
+        {
+          // Snapshot the entry URL while the document is still parsing.
+          //
+          // Vue Router rewrites `location` during hydration on prerendered
+          // pages: on /buy it briefly replaces the URL with the bare route
+          // path — query string dropped — and restores it ~25ms later.
+          // `onMounted` runs inside that window, so reading
+          // `window.location.search` there yields '' and every desktop_nag
+          // visit was recorded as `organic`. Measured on production: the URL
+          // is bare between t+1709ms and t+1736ms.
+          //
+          // A classic inline script runs before any module chunk, so this
+          // always observes the real entry URL. Read it via useEntryUrl().
+          innerHTML: 'window.__s3eEntry={search:location.search,href:location.href,referrer:document.referrer}',
+          tagPosition: 'head',
+        },
+      ],
       title: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage',
       meta: [
         { charset: 'utf-8' },
@@ -62,6 +89,14 @@ export default defineNuxtConfig({
         { name: 'msapplication-TileImage', content: '/android-chrome-192x192.png' },
         { name: 'msapplication-config', content: 'none' },
         { property: 'og:type', content: 'website' },
+        // Named site + locale + explicit image dimensions: without them
+        // Open Graph consumers (and Google's own preview) have to fetch and
+        // measure the image before they can lay the card out.
+        { property: 'og:site_name', content: 'S3 Explorer' },
+        { property: 'og:locale', content: 'en_US' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:alt', content: 'S3 Explorer — desktop app for S3-compatible storage' },
         { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
         { property: 'og:title', content: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage' },
         { property: 'og:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation. Windows, macOS & Linux.' },
@@ -115,6 +150,18 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    urls: ['/', '/buy', '/news'],
+    // Trailing slashes match what the server actually returns 200 for and what
+    // the canonical points at — `/buy` 301s to `/buy/`, so listing the bare
+    // form sent every crawl through a redirect for nothing.
+    //
+    // `lastmod` is the build timestamp. It is the honest value here: the pages
+    // are prerendered, so their content only changes when the site is rebuilt.
+    // It also gives crawlers a reason to come back to /news after a release —
+    // provided the release pipeline triggers a rebuild (see README).
+    urls: [
+      { loc: '/', lastmod: BUILD_TIME },
+      { loc: '/buy/', lastmod: BUILD_TIME },
+      { loc: '/news/', lastmod: BUILD_TIME },
+    ],
   },
 })

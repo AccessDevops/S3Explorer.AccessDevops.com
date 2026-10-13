@@ -31,9 +31,14 @@ useSeoMeta({
 // (the desktop app sends users to /buy?source=desktop_nag).
 //
 // `/buy` is prerendered, so `useRoute().query` is empty during the first hydration
-// tick — reading it in onMounted would tag `website_visited` as `organic` even when
-// the URL says `?source=desktop_nag`. We seed from `window.location.search` instead,
-// the only reliable source on a prerendered page.
+// tick. Reading `window.location.search` in onMounted does not help either: Vue
+// Router briefly replaces the URL with the bare route path during hydration
+// (measured on production: bare between t+1709ms and t+1736ms) and onMounted runs
+// inside that window. Both paid conversions so far were therefore recorded as
+// `organic` while actually coming from the desktop nag popup.
+//
+// entryParams() reads a snapshot taken by an inline <head> script, before any
+// module chunk runs — see app/composables/useEntryUrl.ts.
 const ALLOWED_SOURCES = ['desktop_nag', 'desktop_settings', 'email', 'social']
 
 function normalizeSource(raw: string | null | undefined): string {
@@ -50,8 +55,7 @@ const trafficSource = ref<string>('organic')
 const referralId = ref<string | null>(null)
 
 onMounted(() => {
-  const params = new URLSearchParams(window.location.search)
-  trafficSource.value = normalizeSource(params.get('source'))
+  trafficSource.value = normalizeSource(entryParams().get('source'))
   referralId.value = readPersistedReferralId()
   trackPageView('buy', { source: trafficSource.value })
 })
