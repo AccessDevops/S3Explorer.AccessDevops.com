@@ -65,16 +65,30 @@
   status = 301
   force = true
 
-# Route every non-static path to the Nitro server function. Netlify checks
-# the redirects AFTER trying to serve a static file from `publish`, so
-# pre-rendered routes (/, /buy/, /news/) and asset URLs hit the CDN directly
-# and only API endpoints (and any non-prerendered route) fall through here.
-# Nitro generates an empty _redirects file when all visible routes are
-# pre-rendered, so we wire this fallback explicitly.
+# Only these three surfaces still need the Nitro function: the release feed,
+# the Lemon Squeezy webhook, and the sitemap (generated at request time by
+# @nuxtjs/sitemap). Every page is prerendered and served from the CDN.
 #
-# Keep this LAST: it matches everything.
+# This used to be a `/*` catch-all, which meant every unknown URL was handed
+# to the function — and rendering the error page there fails, so the site
+# answered 500 instead of 404 on any typo. A 500 tells a crawler to retry
+# later and keeps the URL in its queue; a 404 retires it. With the catch-all
+# narrowed, Netlify falls back to the prerendered 404.html instead.
+#
+# If a new server route is ever added under a different path, it needs a rule
+# here or it will 404.
 [[redirects]]
-  from = "/*"
+  from = "/api/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/__sitemap__/*"
   to = "/.netlify/functions/server"
   status = 200
 

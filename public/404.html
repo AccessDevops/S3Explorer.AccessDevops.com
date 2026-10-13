@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — S3 Explorer</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#020817" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<!--
+  Hand-written and self-contained on purpose.
+
+  Netlify serves this file for any path that matches no static file and no
+  redirect, and it answers with HTTP 404. Everything else on the site is
+  prerendered, so this is the only page a visitor can reach by mistyping.
+
+  It carries its own styles and no JavaScript for two reasons. Nuxt's
+  prerendered 404.html is an empty SPA shell that only becomes readable once
+  the bundle hydrates, which a crawler never waits for. And rendering the
+  error page through the Netlify function is what used to turn unknown URLs
+  into a 500 — the function chokes on the per-icon modules of
+  @phosphor-icons/vue during cold start.
+
+  Colours mirror the Tailwind tokens used by the rest of the site.
+-->
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #020817;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #2563eb;
+    --primary-fg: #ffffff;
+    --accent: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #020817;
+      --fg: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --primary: #3b82f6;
+      --primary-fg: #ffffff;
+      --accent: #1e293b;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 34rem; text-align: center; }
+  .code {
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  h1 {
+    margin: 0.75rem 0 0;
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    margin: 1rem 0 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  nav { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  a.primary { background: var(--primary); color: var(--primary-fg); }
+  a.primary:hover { filter: brightness(0.92); }
+  a.secondary { border: 1px solid var(--border); color: var(--fg); }
+  a.secondary:hover { background: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <p class="code">404</p>
+  <h1>This page does not exist</h1>
+  <p class="lead">The address may be mistyped, or the page may have been moved.</p>
+  <nav>
+    <a class="primary" href="/">Back to the home page</a>
+    <a class="secondary" href="/providers/">Provider guides</a>
+  </nav>
+</main>
+</body>
+</html>

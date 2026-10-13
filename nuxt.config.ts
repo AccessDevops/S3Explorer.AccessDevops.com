@@ -159,6 +159,11 @@ export default defineNuxtConfig({
       // icon imports into a single chunk on the server side, prerender is
       // the only option that works. /buy already had no release dependency,
       // unchanged.
+      // The 404 page is NOT prerendered here: Nitro emits an empty SPA shell
+      // for /404.html rather than rendering the error component, so it only
+      // becomes readable after hydration — which a crawler never waits for.
+      // public/404.html is a hand-written static page instead, and Netlify
+      // serves it for unmatched paths now that the catch-all is narrowed.
       routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES],
     },
   },
