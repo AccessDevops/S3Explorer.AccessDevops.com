@@ -130,4 +130,28 @@ export const PROVIDERS: Provider[] = [
     color: '#007DB8',
     svgPath: 'M2 4h20v16H2V4zm2 2v12h16V6H4zm2 2h12v2H6V8zm0 4h12v2H6v-2zm0 4h8v2H6v-2z',
   },
+  {
+    id: 'zenko',
+    name: 'Zenko CloudServer',
+    color: '#1A237E',
+    svgPath: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+  },
+  {
+    id: 'netapp',
+    name: 'NetApp StorageGRID',
+    color: '#0067C5',
+    svgPath: 'M4 2h16v4H4V2zm0 6h16v4H4V8zm0 6h16v4H4v-4zm0 6h16v4H4v-4z',
+  },
+  {
+    id: 'cloudian',
+    name: 'Cloudian HyperStore',
+    color: '#00A3E0',
+    svgPath: 'M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z',
+  },
+  {
+    id: 'scality',
+    name: 'Scality RING',
+    color: '#FF5722',
+    svgPath: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7v-2z',
+  },
 ]
