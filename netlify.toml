@@ -58,6 +58,20 @@
   status = 301
   force = true
 
+# The Netlify deploy domain serves the exact same site as the apex, and its
+# robots.txt allows indexing — so the whole site is crawlable twice and the
+# ranking signals split between two hosts. Send it to the apex instead.
+#
+# This matters more than it looks: the site is effectively absent from Google
+# (6 visitors in five months) while Bing indexes it normally, and duplicate
+# content across two hosts with no canonical is one of the few explanations
+# that fits. The canonical added in app/app.vue covers the rest.
+[[redirects]]
+  from = "https://s3explorer.netlify.app/*"
+  to = "https://s3explorer.accessdevops.com/:splat"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]

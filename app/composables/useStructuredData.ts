@@ -18,6 +18,13 @@ function injectJsonLd(data: unknown) {
   useHead({
     script: [
       {
+        // `key` makes useHead treat this as the same tag across SSR and
+        // hydration. Without it the client re-injects a second <script
+        // type="application/ld+json">, so a rendering crawler sees every
+        // entity twice (verified in headless Chrome: Organization,
+        // SoftwareApplication and WebSite each appeared twice on the home
+        // page while the served HTML contained a single block).
+        key: 'structured-data',
         type: 'application/ld+json',
         innerHTML: JSON.stringify(data),
       },
