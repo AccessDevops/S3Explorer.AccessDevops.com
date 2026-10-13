@@ -41,36 +41,42 @@
   status = 200
   force = true
 
-# Route every non-static path to the Nitro server function. Netlify checks
-# the redirects AFTER trying to serve a static file from `publish`, so
-# pre-rendered routes (/, /buy/, /news/) and asset URLs hit the CDN directly
-# and only API endpoints (and any non-prerendered route) fall through here.
-# Nitro generates an empty _redirects file when all visible routes are
-# pre-rendered, so we wire this fallback explicitly.
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200
-
+# Canonical host. The site answers on three hostnames — the apex, the `www`
+# alias and the Netlify deploy domain — and all three used to serve 200, so
+# the same content was crawlable three times and the ranking signals split
+# between them. That is one of the few explanations that fits the site being
+# effectively absent from Google (6 visitors in five months) while Bing
+# indexes it normally and sends 124.
+#
+# Same ordering constraint as the proxy rules above: these MUST come before
+# the /* → function catch-all. Netlify evaluates redirects top to bottom and
+# the first match wins, so a `/*` placed earlier shadows every host rule
+# after it and none of them ever fire. `force = true` is also required, or
+# the prerendered HTML on the CDN is served before redirects are consulted.
 [[redirects]]
   from = "https://www.s3explorer.accessdevops.com/*"
   to = "https://s3explorer.accessdevops.com/:splat"
   status = 301
   force = true
 
-# The Netlify deploy domain serves the exact same site as the apex, and its
-# robots.txt allows indexing — so the whole site is crawlable twice and the
-# ranking signals split between two hosts. Send it to the apex instead.
-#
-# This matters more than it looks: the site is effectively absent from Google
-# (6 visitors in five months) while Bing indexes it normally, and duplicate
-# content across two hosts with no canonical is one of the few explanations
-# that fits. The canonical added in app/app.vue covers the rest.
 [[redirects]]
   from = "https://s3explorer.netlify.app/*"
   to = "https://s3explorer.accessdevops.com/:splat"
   status = 301
   force = true
+
+# Route every non-static path to the Nitro server function. Netlify checks
+# the redirects AFTER trying to serve a static file from `publish`, so
+# pre-rendered routes (/, /buy/, /news/) and asset URLs hit the CDN directly
+# and only API endpoints (and any non-prerendered route) fall through here.
+# Nitro generates an empty _redirects file when all visible routes are
+# pre-rendered, so we wire this fallback explicitly.
+#
+# Keep this LAST: it matches everything.
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server"
+  status = 200
 
 [[headers]]
   for = "/*"
