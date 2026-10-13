@@ -61,7 +61,14 @@ export function useReleases(options: UseReleasesOptions = {}) {
   return {
     releases,
     latest,
-    loading: computed(() => status.value === 'pending'),
+    // Only a *first* load is "loading". The onMounted refresh() above flips
+    // status back to 'pending' on every page view, and treating that as
+    // loading made /news swap its whole release list for a spinner and back:
+    // two footer displacements, CLS measured at 0.56 in Chrome and 1.49 p75
+    // in the field — six times the "poor" threshold, on a Core Web Vital.
+    // Keeping the prerendered list on screen while it refreshes removes the
+    // swap entirely; the list updates in place when the fetch resolves.
+    loading: computed(() => status.value === 'pending' && releases.value.length === 0),
     error,
     refresh,
   }
