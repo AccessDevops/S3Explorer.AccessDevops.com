@@ -77,6 +77,17 @@
 #
 # If a new server route is ever added under a different path, it needs a rule
 # here or it will 404.
+# Unknown provider ids must answer 404, not 500. /providers/:id is the only
+# dynamic route on the site, and something in the Netlify/Nitro integration
+# routes it to the function even though every valid id is prerendered — the
+# function then fails to render the error page. This rule is not forced, so
+# Netlify still serves the prerendered HTML for the ten real guides and only
+# falls through to 404.html for the rest.
+[[redirects]]
+  from = "/providers/*"
+  to = "/404.html"
+  status = 404
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/server"
