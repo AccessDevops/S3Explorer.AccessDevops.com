@@ -87,7 +87,14 @@ export default defineNuxtConfig({
           tagPosition: 'head',
         },
       ],
-      title: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage',
+      // The title is the one place keywords can live without being shown
+      // to a reader — invisible by design, and the heaviest on-page signal
+      // there is. Search Console reports ~600 impressions for three clicks
+      // on "s3 explorer", "s3 bucket explorer" and "bucket explorer": the
+      // pages are indexed and ranking too low to be clicked. The long tail
+      // ("s3 browser linux", "ceph s3 browser", "opensource s3 browser")
+      // says the market noun is "browser", which appeared nowhere here.
+      title: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -121,11 +128,11 @@ export default defineNuxtConfig({
         { property: 'og:image:height', content: '630' },
         { property: 'og:image:alt', content: 'S3 Explorer — desktop app for S3-compatible storage' },
         { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
-        { property: 'og:title', content: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage' },
+        { property: 'og:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
         { property: 'og:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation. Windows, macOS & Linux.' },
         { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'S3 Explorer - The Modern Desktop App for S3-Compatible Storage' },
+        { name: 'twitter:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
         { name: 'twitter:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation.' },
         { name: 'twitter:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
       ],

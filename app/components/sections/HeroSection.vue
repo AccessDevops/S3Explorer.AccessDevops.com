@@ -46,13 +46,24 @@ const groupedDownloads = computed(() => {
           class="mx-auto h-24 w-24 drop-shadow-lg md:h-28 md:w-28"
         />
 
+        <!-- The tagline lives inside the <h1> rather than in a sibling <p>.
+             Search engines were reading a two-word heading — the product name
+             and nothing else — while the sentence that actually describes the
+             product sat outside it. The classes are the ones the <p> carried,
+             plus font-normal/tracking-normal to undo the heading's own
+             styling, so the rendering is unchanged: verified in headless
+             Chrome at 1280, 768 and 375px, every text node to the pixel.
+
+             Nothing is hidden here on purpose. Visually hidden headings are
+             both against Google's spam policy and discounted when indexed —
+             risk without reward. The keywords that cannot be shown on screen
+             belong in <title>, which is invisible by design. -->
         <h1 class="mt-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           <span class="gradient-text">S3 Explorer</span>
+          <span class="mx-auto mt-4 block max-w-2xl text-base font-normal tracking-normal text-muted-foreground sm:text-lg">
+            The <strong class="font-semibold text-foreground">modern desktop app</strong> for <strong class="font-semibold text-foreground">S3-compatible storage</strong>. Browse, edit, and navigate millions of objects with a smart local index — across every S3-compatible provider.
+          </span>
         </h1>
-
-        <p class="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-          The <strong class="font-semibold text-foreground">modern desktop app</strong> for <strong class="font-semibold text-foreground">S3-compatible storage</strong>. Browse, edit, and navigate millions of objects with a smart local index — across every S3-compatible provider.
-        </p>
 
         <p class="mt-3 text-sm text-muted-foreground">
           for Windows, Linux &amp; macOS

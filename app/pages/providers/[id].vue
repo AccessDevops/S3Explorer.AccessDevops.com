@@ -20,7 +20,19 @@ if (!DOCUMENTED_PROVIDER_IDS.includes(id.value) || !detail.value || !content.val
 const d = detail.value!
 const c = content.value!
 const pageUrl = `${SITE.domain}/providers/${id.value}/`
-const title = `${d.name} with S3 Explorer — connection settings and examples`
+// Two levels on purpose. The <h1> keeps the natural phrasing a reader
+// expects and keeps the product name intact; the <title> carries the
+// noun people actually type. Search Console long tail: "ceph s3 browser",
+// "scality s3 browser", "opensource s3 browser", "s3 browser linux".
+// Google handles the browse/browser morphology, but on a domain this weak
+// the exact term still earns its place where it weighs most.
+const heading = `Browse ${d.name} with S3 Explorer`
+// "Amazon S3" already ends in S3, so appending the noun verbatim gives
+// "Amazon S3 S3 browser". Drop the duplicate rather than special-casing
+// one id: any future provider whose name carries S3 behaves the same.
+const title = d.name.includes('S3')
+  ? `${d.name} browser — connection settings and examples`
+  : `${d.name} S3 browser — connection settings and examples`
 
 useSeoMeta({
   title,
@@ -107,7 +119,7 @@ const exampleRows = computed(() => [
           </svg>
         </div>
         <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
-          {{ d.name }}
+          {{ heading }}
         </h1>
       </div>
 
