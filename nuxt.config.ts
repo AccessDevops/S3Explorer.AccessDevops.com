@@ -98,7 +98,13 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Browse buckets, upload and download files, edit text, preview images and videos. Smart local indexing for ultra-fast navigation across millions of objects. Available on Windows, macOS, and Linux.' },
+        // Mirrors the hero wording so the search snippet and the page say the
+        // same thing. Kept under ~160 characters: the previous one ran to 195
+        // and Google truncated the tail, which is where the platform names
+        // were — and "linux", "ubuntu" and "windows" show up repeatedly in
+        // Search Console (s3 explorer linux, s3 browser ubuntu, ubuntu s3
+        // client gui). They now sit inside the visible part.
+        { name: 'description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse, edit and navigate millions of objects across all your buckets. Windows, macOS, Linux.' },
         // Theme color matches the dark mode background; light mode browsers
         // will render the chrome in their own neutral color.
         { name: 'theme-color', content: '#020817', media: '(prefers-color-scheme: dark)' },
@@ -129,11 +135,11 @@ export default defineNuxtConfig({
         { property: 'og:image:alt', content: 'S3 Explorer — desktop app for S3-compatible storage' },
         { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
         { property: 'og:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
-        { property: 'og:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation. Windows, macOS & Linux.' },
+        { property: 'og:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets. Windows, macOS & Linux.' },
         { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
-        { name: 'twitter:description', content: 'Browse buckets, upload and download files, edit text, preview media. Smart local indexing for ultra-fast navigation.' },
+        { name: 'twitter:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets.' },
         { name: 'twitter:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
       ],
       link: [

@@ -61,7 +61,7 @@ const groupedDownloads = computed(() => {
         <h1 class="mt-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           <span class="gradient-text">S3 Explorer</span>
           <span class="mx-auto mt-4 block max-w-2xl text-base font-normal tracking-normal text-muted-foreground sm:text-lg">
-            The <strong class="font-semibold text-foreground">modern desktop app</strong> for <strong class="font-semibold text-foreground">S3-compatible storage</strong>. Browse, edit, and navigate millions of objects with a smart local index — across every S3-compatible provider.
+            The <strong class="font-semibold text-foreground">modern S3 browser</strong> desktop client for <strong class="font-semibold text-foreground">S3-compatible storage</strong>. An application to browse, edit, and navigate millions of objects with a smart local index<br/> — across all your buckets, on every S3-compatible provider.
           </span>
         </h1>
 
