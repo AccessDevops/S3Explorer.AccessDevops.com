@@ -45,6 +45,50 @@ export function readPersistedReferralId(): string | null {
   }
 }
 
+// The desktop app appends its own PostHog distinct_id to its /buy links
+// (`?rid=`): the referral_id it captured from the clipboard at first launch,
+// or its install UUID when it captured none. SSR-safe; call from onMounted.
+const APP_DISTINCT_ID_PATTERN = /^(s3e_[a-z0-9]{12}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/
+
+export function readAppDistinctId(): string | null {
+  const v = entryParams().get('rid')
+  return v && APP_DISTINCT_ID_PATTERN.test(v) ? v : null
+}
+
+type PostHogClient = NonNullable<ReturnType<typeof usePostHog>>
+
+function isIdentified(posthog: PostHogClient): boolean {
+  return posthog.get_property('$user_state') === 'identified'
+}
+
+// One visitor, one referral_id, for as long as the browser keeps it.
+//
+// Every click used to mint a fresh id and identify() with it. Once a browser
+// is identified, identify() with another id switches it to a new person —
+// PostHog never merges two identified persons — so a second click landed on
+// a person with no web history: 21 of the first 159 download clicks, each
+// sharing its browser session with another person.
+//
+// - Identified with a referral_id: reuse it.
+// - Identified with something else (the app's install UUID, set by /buy):
+//   attach a referral_id with alias(), which links a new id to the current
+//   person instead of switching to another one.
+// - Anonymous: identify() with the persisted id, or a new one. Merging an
+//   anonymous browser into a person is always allowed.
+function linkReferralId(posthog: PostHogClient | undefined): string {
+  if (!posthog) return readPersistedReferralId() ?? generateReferralId()
+  if (isIdentified(posthog)) {
+    const current = posthog.get_distinct_id()
+    if (REFERRAL_ID_PATTERN.test(current)) return current
+    const rid = readPersistedReferralId() ?? generateReferralId()
+    posthog.alias(rid)
+    return rid
+  }
+  const rid = readPersistedReferralId() ?? generateReferralId()
+  posthog.identify(rid)
+  return rid
+}
+
 // Classifies how the visitor reached the site, in a small bucket vocabulary
 // that's stable across pages so PostHog breakdowns are meaningful. Order
 // matters: explicit `?source=` query param (set by the desktop nag popup,
@@ -89,7 +133,7 @@ function classifyTrafficSource(): string {
   const params = entryParams()
   const explicit = params.get('source')
   if (explicit) {
-    if (['desktop_nag', 'desktop_settings', 'email', 'social'].includes(explicit)) return explicit
+    if (['desktop_nag', 'desktop_settings', 'desktop_profile_limit', 'email', 'social'].includes(explicit)) return explicit
     return explicit.slice(0, 32) // truncate junk values defensively
   }
 
@@ -166,14 +210,12 @@ export function useDownloadTracking() {
     url: string
     version: string
   }) {
-    const rid = generateReferralId()
+    // Stitch web ↔ desktop sessions: the referral_id is linked to this
+    // visitor's person, then copied to the clipboard. The desktop app reads
+    // it at first launch and uses it as its distinct_id, so its events land
+    // on the same person.
+    const rid = linkReferralId(posthog)
     referralId.value = rid
-
-    // Stitch web ↔ desktop sessions: from this point on, the visitor's
-    // distinct_id == their referral_id. The desktop app reads the referral_id
-    // from the clipboard at first launch and identifies with the same ID,
-    // letting PostHog merge the two sessions automatically.
-    posthog?.identify(rid)
 
     posthog?.capture('download_clicked', {
       platform: options.platform,
@@ -212,6 +254,27 @@ export function useDownloadTracking() {
     posthog?.capture('download_resolver_no_match', { platform })
   }
 
+  // /buy?rid=<app distinct_id>: the visitor came from the desktop app. An
+  // anonymous browser is merged into the app's person. An identified one is
+  // left alone, since PostHog refuses to merge two identified persons; the
+  // checkout still carries the app's id in custom_data, so the purchase lands
+  // on the app's person either way.
+  function linkAppDistinctId(appRid: string) {
+    if (posthog && !isIdentified(posthog)) posthog.identify(appRid)
+  }
+
+  // `?s3e_internal=1` marks this browser as the team's own, `=0` unmarks it.
+  // Its events then carry `internal: true` and its person `is_internal`, which
+  // the project's "internal and test users" filter excludes. Nothing is
+  // disabled: the events still arrive and stay visible with the filter off.
+  function applyInternalFlag() {
+    const flag = entryParams().get('s3e_internal')
+    if (!posthog || (flag !== '1' && flag !== '0')) return
+    if (flag === '1') posthog.register({ internal: true })
+    else posthog.unregister('internal')
+    posthog.setPersonProperties({ is_internal: flag === '1' })
+  }
+
   return {
     trackPageView,
     trackPlatformDetected,
@@ -221,6 +284,8 @@ export function useDownloadTracking() {
     trackBuyCtaClicked,
     trackNewsViewed,
     trackResolverFallback,
+    linkAppDistinctId,
+    applyInternalFlag,
     clipboardCopied,
     referralId,
   }

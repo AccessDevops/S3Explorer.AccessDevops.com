@@ -26,6 +26,10 @@ const canonical = computed(() => {
 useHead({
   link: [{ rel: 'canonical', href: canonical }],
 })
+
+// `?s3e_internal=1` on any page tags this browser as internal traffic.
+const { applyInternalFlag } = useDownloadTracking()
+onMounted(applyInternalFlag)
 </script>
 
 <template>

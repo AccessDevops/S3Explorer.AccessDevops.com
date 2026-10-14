@@ -10,12 +10,12 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
 import { LEMON_SQUEEZY, SITE, buildCheckoutUrl } from '~/lib/constants'
-import { readPersistedReferralId } from '~/composables/useDownloadTracking'
+import { readAppDistinctId, readPersistedReferralId } from '~/composables/useDownloadTracking'
 import { useBuyStructuredData } from '~/composables/useStructuredData'
 
 const SITE_BASE_URL = SITE.domain
 
-const { trackPageView, trackBuyCtaClicked } = useDownloadTracking()
+const { trackPageView, trackBuyCtaClicked, linkAppDistinctId } = useDownloadTracking()
 
 useSeoMeta({
   title: 'Get a License — S3 Explorer',
@@ -39,7 +39,7 @@ useSeoMeta({
 //
 // entryParams() reads a snapshot taken by an inline <head> script, before any
 // module chunk runs — see app/composables/useEntryUrl.ts.
-const ALLOWED_SOURCES = ['desktop_nag', 'desktop_settings', 'email', 'social']
+const ALLOWED_SOURCES = ['desktop_nag', 'desktop_settings', 'desktop_profile_limit', 'email', 'social']
 
 function normalizeSource(raw: string | null | undefined): string {
   if (typeof raw !== 'string' || raw.length === 0) return 'organic'
@@ -49,15 +49,20 @@ function normalizeSource(raw: string | null | undefined): string {
 
 const trafficSource = ref<string>('organic')
 
-// Referral ID persisted at download_clicked on the home page. We pipe it through
-// to Lemon Squeezy via custom_data so the order webhook can identify the same
-// person in PostHog (web session ↔ checkout ↔ first app launch).
+// The id piped to Lemon Squeezy via custom_data so the order webhook can
+// identify the same person in PostHog (web session ↔ checkout ↔ app).
+//
+// The desktop app's own id (`?rid=`) wins over the one persisted at
+// download_clicked: the license will be activated in that app, and the
+// browser may be another one, or may have downloaded a different install.
 const referralId = ref<string | null>(null)
 
 onMounted(() => {
   trafficSource.value = normalizeSource(entryParams().get('source'))
-  referralId.value = readPersistedReferralId()
-  trackPageView('buy', { source: trafficSource.value })
+  const appRid = readAppDistinctId()
+  if (appRid) linkAppDistinctId(appRid)
+  referralId.value = appRid ?? readPersistedReferralId()
+  trackPageView('buy', { source: trafficSource.value, from_app: appRid !== null })
 })
 
 function trackCta(tier: 'monthly' | 'lifetime' | 'free') {
