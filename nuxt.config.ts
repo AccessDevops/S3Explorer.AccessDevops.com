@@ -94,7 +94,7 @@ export default defineNuxtConfig({
       // pages are indexed and ranking too low to be clicked. The long tail
       // ("s3 browser linux", "ceph s3 browser", "opensource s3 browser")
       // says the market noun is "browser", which appeared nowhere here.
-      title: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more',
+      title: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -134,11 +134,11 @@ export default defineNuxtConfig({
         { property: 'og:image:height', content: '630' },
         { property: 'og:image:alt', content: 'S3 Explorer — desktop app for S3-compatible storage' },
         { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
-        { property: 'og:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
+        { property: 'og:title', content: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2' },
         { property: 'og:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets. Windows, macOS & Linux.' },
         { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'S3 Explorer — S3 Browser & Desktop Client for AWS S3, MinIO, R2 and more' },
+        { name: 'twitter:title', content: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2' },
         { name: 'twitter:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets.' },
         { name: 'twitter:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
       ],

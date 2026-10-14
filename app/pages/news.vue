@@ -53,7 +53,14 @@ function formatDate(iso: string): string {
 
 function renderMarkdown(body: string): string {
   if (!body) return ''
-  return marked.parse(body) as string
+  const html = marked.parse(body) as string
+  // Release notes routinely start with `# v0.3.9`, which marked renders as an
+  // <h1> — giving the page two of them, which Bing's site scan flags and which
+  // muddles the document outline for any crawler. The body sits under the
+  // release's own <h2>, so its headings start at <h3>. Shift every level down
+  // by two, clamped at h6.
+  return html.replace(/<(\/?)h([1-6])\b/g, (_m, slash: string, level: string) =>
+    `<${slash}h${Math.min(Number(level) + 2, 6)}`)
 }
 </script>
 

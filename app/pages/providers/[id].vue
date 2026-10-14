@@ -114,7 +114,7 @@ const exampleRows = computed(() => [
           class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg"
           :style="{ backgroundColor: brand.color + '20' }"
         >
-          <svg :viewBox="brand.svgViewBox || '0 0 24 24'" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg">
+          <svg :viewBox="brand.svgViewBox || '0 0 24 24'" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" role="img" :aria-label="`${d.name} logo`">
             <path :d="brand.svgPath" :fill="brand.color" :stroke="brand.color" stroke-width="0.5" />
           </svg>
         </div>

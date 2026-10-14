@@ -54,6 +54,8 @@ function tileProps(id: string) {
           >
             <svg
               :viewBox="provider.svgViewBox || '0 0 24 24'"
+              role="img"
+              :aria-label="`${provider.name} logo`"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               class="h-[17px] w-[17px]"

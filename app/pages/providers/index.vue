@@ -91,7 +91,7 @@ useHead({
               class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded"
               :style="{ backgroundColor: p.brand!.color + '20' }"
             >
-              <svg :viewBox="p.brand!.svgViewBox || '0 0 24 24'" class="h-[18px] w-[18px]" xmlns="http://www.w3.org/2000/svg">
+              <svg :viewBox="p.brand!.svgViewBox || '0 0 24 24'" class="h-[18px] w-[18px]" xmlns="http://www.w3.org/2000/svg" role="img" :aria-label="`${p.detail.name} logo`">
                 <path :d="p.brand!.svgPath" :fill="p.brand!.color" :stroke="p.brand!.color" stroke-width="0.5" />
               </svg>
             </div>
@@ -126,6 +126,8 @@ useHead({
             >
               <svg
                 :viewBox="p.svgViewBox || '0 0 24 24'"
+                role="img"
+                :aria-label="`${p.name} logo`"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-[17px] w-[17px]"

@@ -42,7 +42,7 @@ const groupedDownloads = computed(() => {
         <!-- App icon -->
         <img
           src="/icon-256.png"
-          alt=""
+          alt="S3 Explorer app icon"
           class="mx-auto h-24 w-24 drop-shadow-lg md:h-28 md:w-28"
         />
 

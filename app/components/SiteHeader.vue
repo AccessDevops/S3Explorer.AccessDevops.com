@@ -24,7 +24,12 @@ const nav = [
     <div class="container relative flex h-16 items-center gap-6">
       <!-- LEFT: logo + nav -->
       <NuxtLink to="/" class="flex items-center gap-2 font-semibold">
-        <img src="/icon-128.png" alt="" class="h-8 w-8" />
+        <!-- Named rather than alt="": the wordmark beside it is hidden below
+             the sm breakpoint, so on a phone this image is the only content
+             of the home link and an empty alt leaves that link unnamed.
+             It is also the one image Bing's site scan reported as missing
+             an alt attribute, once per page. -->
+        <img src="/icon-128.png" alt="S3 Explorer" class="h-8 w-8" />
         <span class="hidden sm:inline">S3 Explorer</span>
       </NuxtLink>
 
