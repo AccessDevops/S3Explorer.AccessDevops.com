@@ -46,11 +46,31 @@ export function useReleases(options: UseReleasesOptions = {}) {
     },
   })
 
-  const releases = computed(() =>
-    (data.value ?? []).filter(r =>
+  // `useFetch` resets `data` to the default — an empty array — when a refresh
+  // fails, which throws away the payload the page was prerendered with. The
+  // onMounted refresh below runs on every view, so a single failing request
+  // emptied the release list site-wide: /news showed "Couldn't load releases"
+  // over a perfectly good server-rendered list of twelve versions, and the
+  // hero fell back to a bare "Download from GitHub" button instead of the
+  // platform-detected download.
+  //
+  // Keeping the last non-empty result means a transient API failure degrades
+  // to slightly stale data rather than to an empty page. The fallback is the
+  // prerendered payload, which is at most one deploy old.
+  const lastGood = ref<Release[]>([])
+  watch(data, (v) => {
+    if (Array.isArray(v) && v.length) lastGood.value = v
+  }, { immediate: true })
+
+  const releases = computed(() => {
+    const fresh = data.value ?? []
+    return (fresh.length ? fresh : lastGood.value).filter(r =>
       !r.draft && (options.includePrereleases || !r.prerelease),
-    ),
-  )
+    )
+  })
+
+  /** True when the feed is unreachable *and* nothing can be shown instead. */
+  const unavailable = computed(() => !!error.value && releases.value.length === 0)
 
   const latest = computed<Release | null>(() => releases.value[0] ?? null)
 
@@ -70,6 +90,7 @@ export function useReleases(options: UseReleasesOptions = {}) {
     // swap entirely; the list updates in place when the fetch resolves.
     loading: computed(() => status.value === 'pending' && releases.value.length === 0),
     error,
+    unavailable,
     refresh,
   }
 }

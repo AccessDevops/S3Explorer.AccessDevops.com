@@ -7,7 +7,7 @@ import { Button } from '~/components/ui/button'
 import { REPO } from '~/lib/constants'
 import { useNewsStructuredData } from '~/composables/useStructuredData'
 
-const { releases, loading, error } = useNews()
+const { releases, loading, unavailable } = useNews()
 const { trackPageView, trackNewsViewed } = useDownloadTracking()
 
 // Inject Blog + BlogPosting[] + BreadcrumbList JSON-LD. Reactive — updates
@@ -85,7 +85,7 @@ function renderMarkdown(body: string): string {
           </div>
 
           <!-- Error state -->
-          <div v-else-if="error" class="rounded-xl border border-destructive/30 bg-destructive/5 p-8 text-center">
+          <div v-else-if="unavailable" class="rounded-xl border border-destructive/30 bg-destructive/5 p-8 text-center">
             <p class="text-sm font-medium">Couldn't load releases.</p>
             <p class="mt-1 text-sm text-muted-foreground">
               You can browse them directly on GitHub:

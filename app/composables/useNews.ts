@@ -5,11 +5,14 @@
 // that conflict with NewsRelease defined locally in useStructuredData).
 
 export function useNews() {
-  const { releases, loading, error, refresh } = useReleases()
+  const { releases, loading, error, unavailable, refresh } = useReleases()
   return {
     releases,
     loading,
     error,
+    // Prefer this over `error` for display: a failed refresh with usable
+    // prerendered data is not something a reader needs to see.
+    unavailable,
     refresh,
   }
 }
