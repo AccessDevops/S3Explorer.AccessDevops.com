@@ -21,6 +21,9 @@ interface LemonAttributes {
   total_usd?: number
   product_id?: number
   variant_id?: number
+  order_id?: number
+  subscription_id?: number
+  billing_reason?: string
   first_order_item?: {
     product_id?: number
     variant_id?: number
@@ -68,11 +71,14 @@ function hashEmail(email: string): string {
 
 // Map Lemon Squeezy event names to PostHog event names.
 // Anything not in this map is acknowledged (200) but not forwarded.
+// `subscription_payment_success` only arrives if it is ticked in the Lemon
+// Squeezy webhook settings.
 const EVENT_MAP: Record<string, string> = {
   order_created: 'purchase_completed',
   subscription_created: 'subscription_started',
   subscription_cancelled: 'subscription_cancelled',
   subscription_expired: 'subscription_expired',
+  subscription_payment_success: 'subscription_renewed',
 }
 
 export default defineEventHandler(async (event) => {
@@ -110,15 +116,36 @@ export default defineEventHandler(async (event) => {
   const source = typeof customData.source === 'string' ? customData.source : null
   const email = typeof attrs.user_email === 'string' ? attrs.user_email : null
 
+  // Join keys. `data.id` is the order id on order events only: subscription
+  // events carry the subscription id there, invoice events the invoice id.
+  // The desktop app reads `meta.order_id` from the License API and sends it
+  // as `ls_order_id`, so `order_id` here has to be the real order id.
+  const dataType = payload.data?.type
+  const orderId = dataType === 'orders'
+    ? String(payload.data.id)
+    : attrs.order_id != null ? String(attrs.order_id) : null
+  // Renewals are invoices, and Lemon Squeezy does not document `custom_data`
+  // on them: they are tied back to the purchase by subscription id instead.
+  const subscriptionId = dataType === 'subscriptions'
+    ? String(payload.data.id)
+    : attrs.subscription_id != null ? String(attrs.subscription_id) : null
+
+  // The first payment of a subscription is already `purchase_completed`
+  // (order_created); only the following ones are renewals.
+  if (eventName === 'subscription_payment_success' && attrs.billing_reason !== 'renewal') {
+    return { ok: true, event: eventName, mapped_to: 'ignored' }
+  }
+
   // Stitching strategy:
   //   1. referral_id → matches the web session (best signal)
   //   2. customer_email hashed → stable across orders for repeat customers
   //   3. order_id → fallback so the event still lands somewhere
   const distinctId = referralId
-    || (email ? `email_${hashEmail(email)}` : `order_${payload.data.id}`)
+    || (email ? `email_${hashEmail(email)}` : `order_${orderId ?? payload.data.id}`)
 
   const props = {
-    tier: inferTier(attrs),
+    // Invoices carry no product id; the monthly plan is the only subscription.
+    tier: dataType === 'subscription-invoices' ? 'monthly' : inferTier(attrs),
     amount_usd:
       typeof attrs.total_usd === 'number'
         ? attrs.total_usd / 100
@@ -127,7 +154,8 @@ export default defineEventHandler(async (event) => {
           : null,
     currency: attrs.currency ?? 'USD',
     store_id: attrs.store_id ?? null,
-    order_id: payload.data.id,
+    order_id: orderId,
+    ls_subscription_id: subscriptionId,
     product_id: attrs.product_id ?? attrs.first_order_item?.product_id ?? null,
     variant_id: attrs.variant_id ?? attrs.first_order_item?.variant_id ?? null,
     customer_email_hashed: email ? hashEmail(email) : null,
