@@ -3,6 +3,7 @@ import { PhArrowLeft, PhArrowSquareOut, PhDownloadSimple, PhWarning } from '@pho
 import { PROVIDERS } from '~/lib/providers'
 import { getProviderDetail } from '~/lib/provider-details'
 import { getProviderContent, DOCUMENTED_PROVIDER_IDS } from '~/lib/provider-content'
+import { guidesForProvider } from '~/lib/guides'
 import { SITE } from '~/lib/constants'
 
 const route = useRoute()
@@ -87,6 +88,11 @@ const facts = computed(() => [
   },
   { label: 'Temporary credentials', value: d.sessionTokenRelevant ? 'Supported (STS / AssumeRole)' : 'Not applicable' },
 ])
+
+// Guides that list this provider in their frontmatter. Shown as a plain list
+// of links: the page stays a reference page, the links are for crawlers and
+// for the reader who wants the wider picture.
+const relatedGuides = computed(() => guidesForProvider(id.value))
 
 const exampleRows = computed(() => [
   ...(c.example.endpoint ? [{ k: 'Endpoint', v: c.example.endpoint }] : []),
@@ -228,6 +234,19 @@ const exampleRows = computed(() => [
             class="rounded border border-border bg-muted/50 px-2 py-1 font-mono text-xs"
           >{{ r }}</code>
         </div>
+      </template>
+
+      <template v-if="relatedGuides.length">
+        <h2 class="mt-12 text-sm font-semibold">
+          Related guides
+        </h2>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li v-for="rg in relatedGuides" :key="rg.slug">
+            <NuxtLink :to="`/guides/${rg.slug}/`" class="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+              {{ rg.title }}
+            </NuxtLink>
+          </li>
+        </ul>
       </template>
 
       <!-- Outbound + CTA -->
