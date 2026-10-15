@@ -3,7 +3,7 @@ title: One desktop client for every S3-compatible storage
 description: Managing AWS S3, Cloudflare R2, Backblaze B2, MinIO or Garage at once? A desktop S3 browser with 25 provider presets and a local index for large buckets.
 published: 2026-10-15
 providers: [aws, cloudflare, backblaze, wasabi, minio, ceph, gcs, digitalocean, ovhcloud, garage, seaweedfs]
-image: /images/guides/s3-compatible-storage-desktop-client/provider-picker.png
+image: /images/guides/s3-compatible-storage-desktop-client/og.png
 imageAlt: S3 Explorer provider picker with 25 S3-compatible presets
 ---
 

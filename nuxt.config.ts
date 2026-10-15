@@ -146,9 +146,11 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2' },
         { property: 'og:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets. Windows, macOS & Linux.' },
         { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
+        // No twitter:title / twitter:description here. Defined globally, they
+        // were never overridden by the pages, so every page shared the home
+        // page's card text. X falls back to og:title / og:description, which
+        // each page already sets.
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2' },
-        { name: 'twitter:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets.' },
         { name: 'twitter:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
       ],
       link: [
