@@ -21,7 +21,11 @@ export interface GuideMeta {
   updated: string
   /** Provider ids (see providers.ts) whose pages list this guide as related. */
   providers: string[]
-  /** Absolute path under public/, used for og:image. Falls back to the site image. */
+  /**
+   * Absolute path under public/, used for og:image. Must be 1200×630: the
+   * og:image:width/height declared site-wide in nuxt.config.ts say so.
+   * Falls back to the site image.
+   */
   image?: string
   imageAlt?: string
 }
