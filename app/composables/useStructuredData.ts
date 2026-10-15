@@ -12,6 +12,13 @@ const ORGANIZATION = {
   'name': 'AccessDevops',
   'url': 'https://github.com/AccessDevops',
   'logo': `${SITE_URL}/icon-256.png`,
+  // The same organisation and product under other names on the web. Search
+  // engines and AI assistants use these links to tie the mentions they find
+  // elsewhere (GitHub, the author's site) to this entity.
+  'sameAs': [
+    'https://github.com/AccessDevops',
+    'https://cbarange.com/',
+  ],
 } as const
 
 function injectJsonLd(data: unknown) {
@@ -45,6 +52,7 @@ export function useHomeStructuredData(version: string) {
         '@type': 'SoftwareApplication',
         '@id': `${SITE_URL}/#app`,
         'name': 'S3 Explorer',
+        'sameAs': ['https://github.com/AccessDevops/S3Explorer'],
         'description': 'The modern desktop app for S3-compatible storage. Browse buckets, upload and download files, edit text, preview images and videos. Smart local indexing for ultra-fast navigation across millions of objects.',
         'applicationCategory': 'DeveloperApplication',
         'applicationSubCategory': 'Cloud Storage Manager',

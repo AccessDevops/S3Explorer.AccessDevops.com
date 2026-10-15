@@ -188,7 +188,7 @@ export default defineNuxtConfig({
       // becomes readable after hydration — which a crawler never waits for.
       // public/404.html is a hand-written static page instead, and Netlify
       // serves it for unmatched paths now that the catch-all is narrowed.
-      routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES, '/guides', ...GUIDE_ROUTES, '/guides/rss.xml'],
+      routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES, '/guides', ...GUIDE_ROUTES, '/guides/rss.xml', '/llms.txt', '/llms-full.txt'],
     },
   },
 

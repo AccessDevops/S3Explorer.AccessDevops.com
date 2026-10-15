@@ -5,6 +5,8 @@ published: 2026-10-15
 providers: [minio, ceph, cloudflare, backblaze, wasabi, ovhcloud, aws]
 ---
 
+**In short:** MinIO's open-source edition no longer receives fixes. The repository is archived, no binaries or images are published, and the 2026 security fixes ship only in MinIO's proprietary AIStor. For a self-hosted replacement, the main options are Silo (a drop-in MinIO fork), RustFS, SeaweedFS, Garage and Ceph RGW; managed S3 storage avoids the question altogether.
+
 ## Why MinIO became the default
 
 For a decade, MinIO was the answer to "S3 outside AWS":
