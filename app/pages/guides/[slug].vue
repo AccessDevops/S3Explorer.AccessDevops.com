@@ -16,8 +16,13 @@ const g = guide
 const pageUrl = `${SITE.domain}/guides/${g.slug}/`
 const image = `${SITE.domain}${g.image ?? '/og-image.png'}`
 
+// The brand suffix is dropped when the guide already names the product,
+// e.g. a comparison: "… S3 Explorer vs … — S3 Explorer" wastes the part of
+// the title a search result shows.
+const pageTitle = g.title.includes('S3 Explorer') ? g.title : `${g.title} — S3 Explorer`
+
 useSeoMeta({
-  title: `${g.title} — S3 Explorer`,
+  title: pageTitle,
   description: g.description,
   ogType: 'article',
   ogTitle: g.title,
