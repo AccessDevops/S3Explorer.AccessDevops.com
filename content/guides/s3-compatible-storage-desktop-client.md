@@ -7,6 +7,8 @@ image: /images/guides/s3-compatible-storage-desktop-client/og.png
 imageAlt: S3 Explorer provider picker with 25 S3-compatible presets
 ---
 
+**In short:** S3 Explorer is a desktop S3 browser for Windows, macOS and Linux that connects to Amazon S3 and S3-compatible storage (Cloudflare R2, Backblaze B2, MinIO, Garage and more) from one interface, with 25 provider presets and a local index for buckets with millions of objects.
+
 ## The problem
 
 Object storage is no longer on a single provider:

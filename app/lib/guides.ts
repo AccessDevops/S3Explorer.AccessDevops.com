@@ -20,6 +20,9 @@ const files = import.meta.glob('../../content/guides/*.md', {
 // <br>.
 const md = new Marked({ gfm: true })
 
+// Outbound links that stay followed: our own repositories and the author.
+const OWN_HOSTS = ['https://github.com/AccessDevops/', 'https://cbarange.com']
+
 md.use({
   renderer: {
     // The page owns the only <h1>. A `#` in a guide becomes an <h2>.
@@ -34,13 +37,16 @@ md.use({
       return `<img src="${href}" alt="${text}"${t} loading="lazy" decoding="async">`
     },
     // Outbound links open elsewhere; links to this site stay in the tab.
+    // They are nofollow unless they point at something of ours: guides cite
+    // competitors and vendors as sources, and a followed link would pass them
+    // ranking the guide was written to earn.
     link({ href, title, tokens }) {
       const label = this.parser.parseInline(tokens)
       const t = title ? ` title="${title}"` : ''
       const external = /^https?:\/\//.test(href) && !href.startsWith(SITE.domain)
-      return external
-        ? `<a href="${href}"${t} target="_blank" rel="noopener noreferrer">${label}</a>`
-        : `<a href="${href}"${t}>${label}</a>`
+      if (!external) return `<a href="${href}"${t}>${label}</a>`
+      const rel = OWN_HOSTS.some(p => href.startsWith(p)) ? 'noopener noreferrer' : 'nofollow noopener noreferrer'
+      return `<a href="${href}"${t} target="_blank" rel="${rel}">${label}</a>`
     },
   },
 })
