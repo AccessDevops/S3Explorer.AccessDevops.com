@@ -10,6 +10,11 @@
   command = "npm run build"
   publish = "dist"
 
+# Tells Bing / DuckDuckGo about every sitemap URL once a production deploy is
+# live. See netlify/plugins/indexnow/index.js.
+[[plugins]]
+  package = "./netlify/plugins/indexnow"
+
 [build.environment]
   NODE_VERSION = "20"
   # Force the Netlify preset explicitly. Nitro normally auto-detects via
@@ -85,6 +90,13 @@
 # falls through to 404.html for the rest.
 [[redirects]]
   from = "/providers/*"
+  to = "/404.html"
+  status = 404
+
+# Same for /guides/:slug — every guide and /guides/rss.xml are prerendered,
+# so only unknown slugs fall through to this unforced rule.
+[[redirects]]
+  from = "/guides/*"
   to = "/404.html"
   status = 404
 

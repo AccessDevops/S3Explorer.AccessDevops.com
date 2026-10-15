@@ -70,4 +70,51 @@
   .section-padding {
     @apply py-20 md:py-28;
   }
+
+  /* Rendered Markdown of a guide (pages/guides/[slug].vue). Written out by
+     hand because @tailwindcss/typography is not installed: the `prose`
+     classes on /news style nothing. Same scale as the provider pages. */
+  .guide-body {
+    @apply leading-relaxed text-muted-foreground;
+  }
+  .guide-body > * + * {
+    @apply mt-5;
+  }
+  .guide-body h2 {
+    @apply mt-12 text-xl font-semibold tracking-tight text-foreground;
+  }
+  .guide-body h3 {
+    @apply mt-8 font-semibold text-foreground;
+  }
+  .guide-body strong {
+    @apply font-semibold text-foreground;
+  }
+  .guide-body a {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+  .guide-body ul {
+    @apply list-disc space-y-1.5 pl-5;
+  }
+  .guide-body ol {
+    @apply list-decimal space-y-1.5 pl-5;
+  }
+  .guide-body code {
+    @apply rounded bg-muted px-1 py-0.5 font-mono text-sm text-foreground;
+  }
+  .guide-body pre {
+    @apply overflow-x-auto rounded-xl border border-border bg-muted/50 p-4 text-sm;
+  }
+  .guide-body pre code {
+    @apply bg-transparent p-0;
+  }
+  .guide-body img {
+    @apply mx-auto rounded-xl border border-border;
+  }
+  /* A caption is an italic line right under the image. */
+  .guide-body p:has(> img) + p > em:only-child {
+    @apply block text-center text-sm;
+  }
+  .guide-body hr {
+    @apply my-10 border-border;
+  }
 }

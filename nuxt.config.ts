@@ -1,4 +1,5 @@
 import { DOCUMENTED_PROVIDER_IDS } from './app/lib/provider-content'
+import { loadGuidesFromDisk } from './app/lib/guide-files'
 
 // Evaluated once per build. Used as `lastmod` in the sitemap: these pages are
 // prerendered, so a rebuild is precisely when their content can change.
@@ -14,6 +15,14 @@ const BUILD_TIME = new Date().toISOString()
 // `nitro.prerender` comment below, and these pages import the same icon
 // package that caused it.
 const PROVIDER_ROUTES = DOCUMENTED_PROVIDER_IDS.map(id => `/providers/${id}`)
+
+// Same rule for the guides: one Markdown file in content/guides/ is one
+// prerendered page and one sitemap entry. Their lastmod is the `updated` date
+// written in the guide rather than the build time, because a guide's content
+// does not change when the site is rebuilt for a release.
+const GUIDES = loadGuidesFromDisk()
+const GUIDE_ROUTES = GUIDES.map(g => `/guides/${g.slug}`)
+const GUIDES_LASTMOD = GUIDES[0]?.updated ?? BUILD_TIME
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -177,7 +186,7 @@ export default defineNuxtConfig({
       // becomes readable after hydration — which a crawler never waits for.
       // public/404.html is a hand-written static page instead, and Netlify
       // serves it for unmatched paths now that the catch-all is narrowed.
-      routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES],
+      routes: ['/', '/buy', '/news', '/providers', ...PROVIDER_ROUTES, '/guides', ...GUIDE_ROUTES, '/guides/rss.xml'],
     },
   },
 
@@ -207,6 +216,8 @@ export default defineNuxtConfig({
       // invisible to the module's auto-discovery, so they are listed here.
       { loc: '/providers/', lastmod: BUILD_TIME },
       ...PROVIDER_ROUTES.map(r => ({ loc: `${r}/`, lastmod: BUILD_TIME })),
+      ...(GUIDES.length ? [{ loc: '/guides/', lastmod: GUIDES_LASTMOD }] : []),
+      ...GUIDES.map(g => ({ loc: `/guides/${g.slug}/`, lastmod: g.updated })),
     ],
   },
 })
