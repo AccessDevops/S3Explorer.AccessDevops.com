@@ -54,7 +54,9 @@ useHead({
           'url': pageUrl,
           'mainEntityOfPage': pageUrl,
           'about': { '@type': 'SoftwareApplication', 'name': 'S3 Explorer', 'url': `${SITE.domain}/` },
-          'author': { '@type': 'Person', 'name': 'Clement Baranger', 'url': 'https://cbarange.com/' },
+          // Same entity as on /about/; name and url repeated because
+          // consumers do not always resolve an @id defined on another page.
+          'author': { '@type': 'Person', '@id': `${SITE.domain}/about/#author`, 'name': 'Clement Baranger', 'url': `${SITE.domain}/about/` },
           'publisher': { '@id': `${SITE.domain}/#org` },
         },
         {
@@ -96,8 +98,11 @@ function formatDate(iso: string): string {
       <h1 class="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
         {{ g.title }}
       </h1>
+      <!-- Visible byline: the JSON-LD names an author, and Google asks for
+           structured data to match what the page shows. -->
       <p class="mt-3 text-sm text-muted-foreground">
-        <time :datetime="g.updated">Updated {{ formatDate(g.updated) }}</time>
+        By <NuxtLink to="/about/" rel="author" class="underline-offset-4 hover:text-foreground hover:underline">Clement Baranger</NuxtLink>
+        · <time :datetime="g.updated">Updated {{ formatDate(g.updated) }}</time>
       </p>
 
       <div class="guide-body mt-8" v-html="g.html" />

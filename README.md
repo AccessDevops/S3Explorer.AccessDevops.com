@@ -57,7 +57,7 @@ providers: [aws, minio]
 - Links to the official documentation behind each fact
 ```
 
-`providers` lists the provider ids whose connection guide links back to the guide. Facts need a source; outbound links are marked nofollow automatically.
+`providers` lists the provider ids whose connection guide links back to the guide. Facts need a source; outbound links are marked nofollow automatically. Images go in `public/images/guides/<slug>/` with their size as title, so the page does not shift while they load: `![Alt text](/images/guides/<slug>/shot.png "=894x674")`.
 
 ## Running locally
 
