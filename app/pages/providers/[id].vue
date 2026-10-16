@@ -171,6 +171,54 @@ const exampleRows = computed(() => [
         {{ c.example.note }}
       </p>
 
+      <!-- Screenshots of S3 Explorer 0.3.9 with the example values above, in
+           public/images/providers/<id>/. Every documented provider has them:
+           adding a provider to provider-content.ts means capturing these three
+           at the same sizes. -->
+      <h2 class="mt-12 text-xl font-semibold tracking-tight">
+        In S3 Explorer
+      </h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Click Add, search for {{ d.name }} and pick it: the form opens with the
+        endpoint format, addressing mode and provider help already set. The
+        screenshots below use the example values above.
+      </p>
+      <figure class="mt-4">
+        <img
+          :src="`/images/providers/${id}/search.png`"
+          :alt="`S3 Explorer provider picker filtered to ${d.name} by the search field`"
+          width="896" height="261" loading="lazy" decoding="async"
+          class="h-auto w-full rounded-xl border border-border"
+        >
+        <figcaption class="mt-2 text-center text-sm text-muted-foreground">
+          Finding {{ d.name }} in the provider picker.
+        </figcaption>
+      </figure>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <figure>
+          <img
+            :src="`/images/providers/${id}/form-top.png`"
+            :alt="`S3 Explorer connection form for ${d.name}: provider help, profile name, endpoint and region`"
+            width="672" height="901" loading="lazy" decoding="async"
+            class="h-auto w-full rounded-xl border border-border"
+          >
+          <figcaption class="mt-2 text-center text-sm text-muted-foreground">
+            Provider help, endpoint and region.
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            :src="`/images/providers/${id}/form-bottom.png`"
+            :alt="`S3 Explorer connection form for ${d.name}: access key, secret key and path-style addressing`"
+            width="672" height="901" loading="lazy" decoding="async"
+            class="h-auto w-full rounded-xl border border-border"
+          >
+          <figcaption class="mt-2 text-center text-sm text-muted-foreground">
+            Credentials and addressing mode.
+          </figcaption>
+        </figure>
+      </div>
+
       <!-- Help copy carried over from the app's connection form -->
       <h2 class="mt-12 text-xl font-semibold tracking-tight">
         Where each value comes from
