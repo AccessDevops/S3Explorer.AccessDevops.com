@@ -20,6 +20,8 @@ const files = import.meta.glob('../../content/guides/*.md', {
 // <br>.
 const md = new Marked({ gfm: true })
 
+const attr = (s: string) => s.replace(/&(?!amp;|lt;|gt;|quot;|#39;)/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
 // Outbound links that stay followed: our own repositories and the author.
 const OWN_HOSTS = ['https://github.com/AccessDevops/', 'https://cbarange.com']
 
@@ -32,9 +34,11 @@ md.use({
     },
     // Screenshots sit below the fold: don't let them compete with the text
     // for the first paint.
+    // Alt text is escaped: it often quotes UI labels, and a raw `"` would end
+    // the attribute.
     image({ href, title, text }) {
-      const t = title ? ` title="${title}"` : ''
-      return `<img src="${href}" alt="${text}"${t} loading="lazy" decoding="async">`
+      const t = title ? ` title="${attr(title)}"` : ''
+      return `<img src="${attr(href)}" alt="${attr(text)}"${t} loading="lazy" decoding="async">`
     },
     // Outbound links open elsewhere; links to this site stay in the tab.
     // They are nofollow unless they point at something of ours: guides cite
