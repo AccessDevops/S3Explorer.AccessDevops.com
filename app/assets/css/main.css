@@ -108,7 +108,7 @@
     @apply bg-transparent p-0;
   }
   .guide-body img {
-    @apply mx-auto rounded-xl border border-border;
+    @apply mx-auto h-auto max-w-full rounded-xl border border-border;
   }
   /* A caption is an italic line right under the image. */
   .guide-body p:has(> img) + p > em:only-child {

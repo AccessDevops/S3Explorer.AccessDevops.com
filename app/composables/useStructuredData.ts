@@ -62,7 +62,8 @@ export function useHomeStructuredData(version: string) {
         'installUrl': SITE_URL,
         'releaseNotes': `${SITE_URL}/news`,
         'image': `${SITE_URL}/og-image.png`,
-        'screenshot': `${SITE_URL}/og-image.png`,
+        // A real capture of the app, not the share banner.
+        'screenshot': `${SITE_URL}/images/guides/s3-compatible-storage-desktop-client/provider-picker.png`,
         'url': SITE_URL,
         'inLanguage': ['en', 'fr', 'es', 'pt', 'zh', 'hi', 'ar', 'bn', 'id', 'ro'],
         'offers': [

@@ -36,9 +36,13 @@ md.use({
     // for the first paint.
     // Alt text is escaped: it often quotes UI labels, and a raw `"` would end
     // the attribute.
+    // A title of the form "=894x674" gives the image's intrinsic size, so the
+    // browser reserves its space before it loads instead of shifting the text.
     image({ href, title, text }) {
-      const t = title ? ` title="${attr(title)}"` : ''
-      return `<img src="${attr(href)}" alt="${attr(text)}"${t} loading="lazy" decoding="async">`
+      const size = title?.match(/^=(\d+)x(\d+)$/)
+      const dims = size ? ` width="${size[1]}" height="${size[2]}"` : ''
+      const t = title && !size ? ` title="${attr(title)}"` : ''
+      return `<img src="${attr(href)}" alt="${attr(text)}"${dims}${t} loading="lazy" decoding="async">`
     },
     // Outbound links open elsewhere; links to this site stay in the tab.
     // They are nofollow unless they point at something of ours: guides cite

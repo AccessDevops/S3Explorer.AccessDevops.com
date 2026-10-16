@@ -23,11 +23,11 @@ All of these speak the S3 API, but each has its own web console, its own quirks 
 
 S3 Explorer is a desktop S3 browser for Windows, macOS and Linux (x64 and ARM64). 25 presets fill in the endpoint format, regions and addressing mode: AWS S3, Google Cloud Storage, Cloudflare R2, Backblaze B2, Wasabi, DigitalOcean Spaces, OVHcloud, Scaleway, Hetzner, MinIO, Ceph RGW, Garage, SeaweedFS, Dell ECS and more. Any other service works through a custom endpoint.
 
-![S3 Explorer provider picker showing 25 S3-compatible presets including Amazon S3, Cloudflare R2, Backblaze B2, MinIO, Garage and SeaweedFS](/images/guides/s3-compatible-storage-desktop-client/provider-picker.png)
+![S3 Explorer provider picker showing 25 S3-compatible presets including Amazon S3, Cloudflare R2, Backblaze B2, MinIO, Garage and SeaweedFS](/images/guides/s3-compatible-storage-desktop-client/provider-picker.png "=894x674")
 
 *Provider presets, grouped by cloud, specialist, self-hosted and enterprise.*
 
-![S3 Explorer connection form pre-filled for Cloudflare R2 with endpoint format and built-in provider help](/images/guides/s3-compatible-storage-desktop-client/provider-preset-r2.png)
+![S3 Explorer connection form pre-filled for Cloudflare R2 with endpoint format and built-in provider help](/images/guides/s3-compatible-storage-desktop-client/provider-preset-r2.png "=670x771")
 
 *The R2 preset fills in the endpoint and documents where to find the credentials.*
 

@@ -37,6 +37,7 @@ const year = new Date().getFullYear()
           <h3 class="text-sm font-semibold">Resources</h3>
           <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><NuxtLink to="/guides/" class="hover:text-foreground">Guides</NuxtLink></li>
+            <li><NuxtLink to="/about/" class="hover:text-foreground">About</NuxtLink></li>
             <li>
               <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-foreground">
                 <PhGithubLogo :size="14" /> GitHub
