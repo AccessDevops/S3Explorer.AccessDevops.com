@@ -8,7 +8,10 @@
 // A provider gets a page ONLY if it has an entry here. Twenty-five pages
 // built from the generated fields alone would be the same ~180 words with
 // three values swapped, which search engines classify as doorway pages and
-// penalise across the whole domain. Adding a provider means writing it up.
+// penalise across the whole domain. Adding a provider means writing it up,
+// and capturing its three screenshots in public/images/providers/<id>/
+// (search.png 896×261, form-top.png and form-bottom.png 672×901), which the
+// page shows under "In S3 Explorer".
 //
 // Every credential below is fabricated. The AWS pair is the one Amazon
 // publishes in its own documentation precisely so it can be recognised as
