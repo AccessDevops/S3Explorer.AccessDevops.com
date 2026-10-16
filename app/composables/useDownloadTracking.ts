@@ -147,6 +147,20 @@ function classifyTrafficSource(): string {
     return utm.slice(0, 32)
   }
 
+  // `?ref=` is what listing sites hand out, and they are exactly the sites
+  // that strip the referrer: Product Hunt sends visitors to
+  // `/?ref=producthunt` with no Referer header at all, so without this branch
+  // a launch day's traffic is indistinguishable from direct. Checked after
+  // utm_source because a campaign tag is the more deliberate signal, and
+  // before the referrer because there usually is none left to read.
+  const refParam = params.get('ref')
+  if (refParam) {
+    const lower = refParam.toLowerCase()
+    const engine = classifyHost(lower)
+    if (engine) return engine
+    return lower.slice(0, 32)
+  }
+
   const ref = (entryReferrer() || '').toLowerCase()
   if (!ref) return 'direct'
   try {
