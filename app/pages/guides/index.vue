@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PhRssSimple } from '@phosphor-icons/vue'
 import { GUIDES } from '~/lib/guides'
 import { SITE } from '~/lib/constants'
 
@@ -57,9 +58,23 @@ useHead({
 <template>
   <div class="container section-padding">
     <div class="mx-auto max-w-3xl">
-      <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
-        Guides
-      </h1>
+      <div class="flex items-baseline justify-between gap-4">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">
+          Guides
+        </h1>
+        <!-- The feed is also announced in <head> for readers that discover
+             it; this is for people who subscribe by hand. A plain <a>: the
+             file is static, not a route. -->
+        <a
+          href="/guides/rss.xml"
+          type="application/rss+xml"
+          class="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Subscribe to the guides RSS feed"
+        >
+          <PhRssSimple :size="15" />
+          RSS
+        </a>
+      </div>
       <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
         Working with S3-compatible object storage, across providers.
       </p>
