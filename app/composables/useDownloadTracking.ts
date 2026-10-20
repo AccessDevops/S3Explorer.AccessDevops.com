@@ -17,12 +17,54 @@ function generateReferralId(): string {
   return `s3e_${id}`
 }
 
-async function copyToClipboard(text: string): Promise<boolean> {
+/** How the referral id reached the clipboard, or that it did not. */
+export type ClipboardMethod = 'async' | 'legacy' | 'failed'
+
+/**
+ * Put the referral id on the clipboard without the visitor noticing.
+ *
+ * `navigator.clipboard.writeText` is the right API and works almost
+ * everywhere, but it is refused outside a secure context, under some Firefox
+ * configurations, and once the transient activation granted by the click has
+ * lapsed. When it is refused the id still reaches PostHog and still shows in
+ * the toast — it simply never reaches the desktop app, so the install that
+ * follows cannot be tied back to this visit. That failure was silent.
+ *
+ * The fallback is the pre-Clipboard-API idiom: an off-screen textarea,
+ * selected and copied synchronously. `document.execCommand` is deprecated but
+ * implemented by every engine, and allowed in cases where the async API is
+ * not — which is exactly when it is needed. It is not a second channel with
+ * its own per-OS behaviour; it is the same clipboard written another way, and
+ * it asks the visitor for nothing.
+ */
+async function copyToClipboard(text: string): Promise<ClipboardMethod> {
   try {
     await navigator.clipboard.writeText(text)
-    return true
-  } catch {
-    return false
+    return 'async'
+  }
+  catch {
+    // fall through to the legacy path
+  }
+
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    // Off-screen rather than `display:none` or `hidden`: an unrendered
+    // element cannot hold a selection, so the copy would fail for the wrong
+    // reason. `readonly` keeps the mobile keyboard from appearing.
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.top = '-9999px'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    ta.setSelectionRange(0, text.length)
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok ? 'legacy' : 'failed'
+  }
+  catch {
+    return 'failed'
   }
 }
 
@@ -240,6 +282,17 @@ export function useDownloadTracking() {
     const rid = linkReferralId(posthog)
     referralId.value = rid
 
+    persistReferralId(rid)
+
+    // The clipboard write goes first, before the capture: it is the only step
+    // here that depends on the user activation the click just granted, and
+    // every millisecond spent elsewhere is one it may not get back. Capturing
+    // afterwards also lets the event carry the outcome, so the share of
+    // downloads that lose the id is a breakdown of this event rather than a
+    // second one to join back to it.
+    const method = await copyToClipboard(rid)
+    clipboardCopied.value = method !== 'failed'
+
     posthog?.capture('download_clicked', {
       platform: options.platform,
       filename: options.filename,
@@ -247,10 +300,9 @@ export function useDownloadTracking() {
       referral_id: rid,
       source_ui: options.sourceUi ?? 'primary_button',
       asset_id: options.assetId,
+      clipboard_copied: method !== 'failed',
+      clipboard_method: method,
     })
-
-    persistReferralId(rid)
-    clipboardCopied.value = await copyToClipboard(rid)
 
     return rid
   }
