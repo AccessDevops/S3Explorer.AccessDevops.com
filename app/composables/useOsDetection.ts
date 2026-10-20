@@ -10,6 +10,11 @@ export type Platform =
 
 export interface DownloadOption {
   id: string
+  /** Platform this asset targets. Set from `group`, so a pill clicked in the
+   *  "other platforms" list reports what the visitor actually chose rather
+   *  than what the browser was detected as — the two differ precisely when
+   *  someone opens that list. */
+  platform: Platform
   /** Visual group header (one of: 'macOS', 'Windows x64', 'Windows ARM64',
    *  'Linux x64', 'Linux ARM64'). Used by the UI to render grouped pills. */
   group: string
@@ -236,6 +241,17 @@ function getExtensionLabel(filename: string): string {
  * previous release that shipped it. Specs without any match in the scanned
  * releases are simply omitted.
  */
+/** `group` is the visible heading; this maps it to the same vocabulary the
+ *  `platform` event property already uses, so list downloads and primary-button
+ *  downloads aggregate together in PostHog instead of forming a second scale. */
+const GROUP_PLATFORMS: Record<string, Platform> = {
+  'macOS': 'macos',
+  'Windows x64': 'windows-x64',
+  'Windows ARM64': 'windows-arm64',
+  'Linux x64': 'linux-amd64',
+  'Linux ARM64': 'linux-aarch64',
+}
+
 export function buildAllDownloadOptions(releases: Release[]): DownloadOption[] {
   const options: DownloadOption[] = []
   for (const spec of INSTALLERS) {
@@ -244,6 +260,7 @@ export function buildAllDownloadOptions(releases: Release[]): DownloadOption[] {
     options.push({
       id: spec.id,
       group: spec.group,
+      platform: spec.isPrimaryFor ?? GROUP_PLATFORMS[spec.group] ?? 'unknown',
       label: spec.label,
       description: spec.description,
       url: match.asset.browser_download_url,

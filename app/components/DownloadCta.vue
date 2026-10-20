@@ -19,6 +19,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   download: [url: string, filename: string]
+  // The fallback button below replaces the real download whenever the release
+  // feed is unreachable. It sends people to GitHub, where whatever they do
+  // next is invisible to us — so at least record that we sent them.
+  openReleases: [where: string]
 }>()
 
 function onClick() {
@@ -61,7 +65,12 @@ function onClick() {
     variant="default"
     :class="fullWidth ? 'w-full' : ''"
   >
-    <a :href="releasesPageUrl" target="_blank" rel="noopener noreferrer">
+    <a
+      :href="releasesPageUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      @click="emit('openReleases', 'download_cta_fallback')"
+    >
       <PhDownloadSimple :size="20" weight="bold" />
       Download from GitHub
     </a>

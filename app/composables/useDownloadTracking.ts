@@ -223,6 +223,15 @@ export function useDownloadTracking() {
     filename: string
     url: string
     version: string
+    /** Which control the visitor used. `platform_list` was untracked until
+     *  2026-10-20: its pills were bare <a href> elements, so every download
+     *  taken from the "other platforms" list looked afterwards like someone
+     *  who had found the GitHub releases page unaided. Three installs on
+     *  2026-10-19 arrived with no download event at all. */
+    sourceUi?: 'primary_button' | 'platform_list'
+    /** Installer spec id, e.g. `linux-amd64-deb`. Only the list can report
+     *  this: the primary button has exactly one asset per platform. */
+    assetId?: string
   }) {
     // Stitch web ↔ desktop sessions: the referral_id is linked to this
     // visitor's person, then copied to the clipboard. The desktop app reads
@@ -236,6 +245,8 @@ export function useDownloadTracking() {
       filename: options.filename,
       version: options.version,
       referral_id: rid,
+      source_ui: options.sourceUi ?? 'primary_button',
+      asset_id: options.assetId,
     })
 
     persistReferralId(rid)
@@ -246,6 +257,14 @@ export function useDownloadTracking() {
 
   function trackAllPlatformsOpened() {
     posthog?.capture('all_platforms_opened')
+  }
+
+  /** Someone leaving for the GitHub releases page. Deliberately not a
+   *  `download_clicked`: we cannot know whether they took a file there, and
+   *  counting it as a download would inflate the very conversion rate this
+   *  event exists to explain. `where` says which link they used. */
+  function trackGithubReleasesOpened(where: string) {
+    posthog?.capture('github_releases_opened', { where })
   }
 
   function trackVideoPlayed() {
@@ -294,6 +313,7 @@ export function useDownloadTracking() {
     trackPlatformDetected,
     trackDownloadClicked,
     trackAllPlatformsOpened,
+    trackGithubReleasesOpened,
     trackVideoPlayed,
     trackBuyCtaClicked,
     trackNewsViewed,

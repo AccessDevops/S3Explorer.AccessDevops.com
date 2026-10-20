@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { buildAllDownloadOptions } from '~/composables/useOsDetection'
+import type { DownloadOption } from '~/composables/useOsDetection'
 
 // `releases` is the foundation now (full list of recent releases). The smart
 // resolver in useOsDetection walks this list newest-first to find the most
@@ -19,6 +20,7 @@ const {
   trackPlatformDetected,
   trackDownloadClicked,
   trackAllPlatformsOpened,
+  trackGithubReleasesOpened,
   trackVideoPlayed,
   trackResolverFallback,
   clipboardCopied,
@@ -81,8 +83,32 @@ async function handleDownload(url: string, filename: string = '') {
     // Send the version of the actual release the user is downloading, not
     // the absolute latest. Lets PostHog funnels accurately attribute installs.
     version: primaryDownload.value?.version || latestVersion.value,
+    sourceUi: 'primary_button',
   })
 
+  startDownload(url)
+}
+
+/** A pill from the "other platforms" list. Reports the chosen platform, not
+ *  the detected one: someone opening that list is usually there because the
+ *  detected platform was not what they wanted. */
+async function handleDownloadOption(option: DownloadOption) {
+  await trackDownloadClicked({
+    platform: option.platform,
+    filename: option.filename,
+    url: option.url,
+    version: option.version,
+    sourceUi: 'platform_list',
+    assetId: option.id,
+  })
+
+  startDownload(option.url)
+}
+
+/** Shared tail of both download paths: show the clipboard toast, then
+ *  navigate. The asset URL serves an attachment, so the page is not unloaded
+ *  and the capture issued just above completes normally. */
+function startDownload(url: string) {
   showClipboardToast.value = true
   if (toastTimer) clearTimeout(toastTimer)
   toastTimer = setTimeout(() => { showClipboardToast.value = false }, 4500)
@@ -114,6 +140,8 @@ const isLoadingDownload = computed(() => isDetecting.value || releaseLoading.val
       :show-all-platforms="showAllPlatforms"
       :all-downloads="allDownloads"
       @download="handleDownload"
+      @download-option="handleDownloadOption"
+      @open-releases="trackGithubReleasesOpened"
       @toggle-all-platforms="handleToggleAllPlatforms"
     />
 

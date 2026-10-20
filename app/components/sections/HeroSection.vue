@@ -14,6 +14,11 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<{
   download: [url: string, filename: string]
+  // The pills below were plain links until 2026-10-20 and so produced no
+  // event at all; they carry the option itself because the visitor is
+  // choosing a platform here, which is often not the detected one.
+  downloadOption: [option: DownloadOption]
+  openReleases: [where: string]
   toggleAllPlatforms: []
 }>()
 
@@ -77,6 +82,7 @@ const groupedDownloads = computed(() => {
             :version="version"
             size="xl"
             @download="(u, f) => emit('download', u, f)"
+            @open-releases="(w) => emit('openReleases', w)"
           />
 
           <button
@@ -117,6 +123,7 @@ const groupedDownloads = computed(() => {
                       :key="dl.id"
                       :href="dl.url"
                       :title="dl.description"
+                      @click.prevent="emit('downloadOption', dl)"
                       class="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                     >
                       <span>{{ dl.label }}</span>
@@ -130,6 +137,7 @@ const groupedDownloads = computed(() => {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="rounded-md bg-muted px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                @click="emit('openReleases', 'hero_other_platforms')"
               >
                 Others ↗
               </a>
