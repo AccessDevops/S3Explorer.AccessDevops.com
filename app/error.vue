@@ -13,10 +13,20 @@ const is404 = computed(() => props.error?.statusCode === 404)
 
 useSeoMeta({
   title: is404.value ? 'Page not found — S3 Explorer' : 'Something went wrong — S3 Explorer',
-  // Keep error pages out of the index even though the status code already
-  // says so: a soft 404 served with a 200 by a proxy would otherwise be
-  // eligible for indexing.
-  robots: 'noindex, follow',
+  // `noindex` only for a genuine not-found, never for a transient failure.
+  //
+  // This component also replaces the page when an error happens *after* a
+  // successful fetch — a hydration failure, a chunk that 404s because a
+  // deploy landed between the HTML and its JavaScript. Google renders pages
+  // before indexing them, so it reads whatever that render produced: on
+  // 2026-10-18 it fetched the home page successfully, rendered this
+  // component instead, and dropped the URL with "Excluded by 'noindex' tag".
+  //
+  // A missing page should say so permanently; a page that failed once must
+  // not. For those the HTTP status already tells Google to come back later,
+  // and an unconditional `noindex` overrides it with "never index this" —
+  // removal is immediate, re-inclusion takes weeks.
+  robots: is404.value ? 'noindex, follow' : undefined,
 })
 </script>
 
