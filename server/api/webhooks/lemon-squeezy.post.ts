@@ -24,6 +24,10 @@ interface LemonAttributes {
   order_id?: number
   subscription_id?: number
   billing_reason?: string
+  refunded?: boolean
+  refunded_at?: string
+  refunded_amount?: number
+  refunded_amount_usd?: number
   first_order_item?: {
     product_id?: number
     variant_id?: number
@@ -71,14 +75,25 @@ function hashEmail(email: string): string {
 
 // Map Lemon Squeezy event names to PostHog event names.
 // Anything not in this map is acknowledged (200) but not forwarded.
-// `subscription_payment_success` only arrives if it is ticked in the Lemon
-// Squeezy webhook settings.
+//
+// Every entry here also has to be ticked in the Lemon Squeezy webhook
+// settings, and one without the other does nothing. `subscription_payment_
+// success` was unticked until 2026-10-22: the first renewal of the only
+// subscription was charged and never recorded, and because Lemon Squeezy
+// does not replay webhooks, that payment is lost for good.
+//
+// `order_refunded` matters more than its rarity suggests: without it a
+// refunded sale stays counted as revenue forever. `subscription_payment_
+// failed` is the usual cause of losing a subscriber — an expired card, not
+// a decision — and it is the only warning before the subscription expires.
 const EVENT_MAP: Record<string, string> = {
   order_created: 'purchase_completed',
+  order_refunded: 'purchase_refunded',
   subscription_created: 'subscription_started',
   subscription_cancelled: 'subscription_cancelled',
   subscription_expired: 'subscription_expired',
   subscription_payment_success: 'subscription_renewed',
+  subscription_payment_failed: 'subscription_payment_failed',
 }
 
 export default defineEventHandler(async (event) => {
@@ -131,10 +146,19 @@ export default defineEventHandler(async (event) => {
     : attrs.subscription_id != null ? String(attrs.subscription_id) : null
 
   // The first payment of a subscription is already `purchase_completed`
-  // (order_created); only the following ones are renewals.
-  if (eventName === 'subscription_payment_success' && attrs.billing_reason !== 'renewal') {
-    return { ok: true, event: eventName, mapped_to: 'ignored' }
-  }
+  // (order_created), so only `renewal` invoices count as renewals. Anything
+  // else used to be dropped here and answered 200 without a word, which is
+  // the same silent failure that lost the first renewal — a payment the
+  // store had taken and the data never showed.
+  //
+  // So nothing is dropped any more: a non-renewal invoice becomes its own
+  // event carrying `billing_reason`, outside the sales figures and therefore
+  // unable to double-count, but visible. Lemon Squeezy does not document the
+  // values this field takes; this is how we find out, on real traffic,
+  // instead of guessing. A trial's first real charge in particular may well
+  // not be labelled `renewal`.
+  const isNonRenewalInvoice
+    = eventName === 'subscription_payment_success' && attrs.billing_reason !== 'renewal'
 
   // Stitching strategy:
   //   1. referral_id → matches the web session (best signal)
@@ -163,11 +187,30 @@ export default defineEventHandler(async (event) => {
     referral_id: referralId,
     test_mode: !!payload.meta?.test_mode,
     ls_event: eventName,
+    // Only set on subscription invoices; this is the field that decides
+    // whether a payment counts as a renewal.
+    billing_reason: attrs.billing_reason ?? null,
+    // Only set on refunds. Kept apart from `amount_usd`, which stays the
+    // original order total, so a refund can be subtracted from the sale it
+    // cancels rather than replacing it.
+    refunded_amount_usd:
+      typeof attrs.refunded_amount_usd === 'number'
+        ? attrs.refunded_amount_usd / 100
+        : typeof attrs.refunded_amount === 'number'
+          ? attrs.refunded_amount / 100
+          : null,
   }
 
-  const phEvent = EVENT_MAP[eventName]
+  const phEvent = isNonRenewalInvoice
+    ? 'subscription_payment_other'
+    : EVENT_MAP[eventName]
 
   if (!phEvent) {
+    // Logged rather than returned quietly: an event that is ticked in Lemon
+    // Squeezy but missing from EVENT_MAP looks exactly like one that was
+    // never sent, and the Netlify function log is the only place that can
+    // tell them apart afterwards.
+    console.warn(`[LS webhook] no mapping for "${eventName}"; acknowledged but not forwarded`)
     return { ok: true, event: eventName, mapped_to: 'ignored' }
   }
 
