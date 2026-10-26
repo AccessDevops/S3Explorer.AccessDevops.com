@@ -22,7 +22,7 @@ useSeoMeta({
   description: 'Support S3 Explorer development and unlock unlimited connection profiles. 11,50 € lifetime or 1,99 € per month. The app remains free without a license.',
   ogTitle: 'Get a License — S3 Explorer',
   ogDescription: 'Support S3 Explorer development. 11,50 € lifetime or 1,99 €/month. The app stays free.',
-  ogUrl: 'https://s3explorer.accessdevops.com/buy',
+  ogUrl: 'https://s3explorer.accessdevops.com/buy/',
   ogImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
   twitterImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
 })

@@ -19,7 +19,7 @@ useSeoMeta({
   description: 'Latest releases, features, and improvements for S3 Explorer. Follow what\'s new in the desktop app.',
   ogTitle: 'News & Releases — S3 Explorer',
   ogDescription: 'Latest releases, features, and improvements for S3 Explorer.',
-  ogUrl: 'https://s3explorer.accessdevops.com/news',
+  ogUrl: 'https://s3explorer.accessdevops.com/news/',
   ogImage: 'https://s3explorer.accessdevops.com/og-image-news.png',
   twitterImage: 'https://s3explorer.accessdevops.com/og-image-news.png',
 })

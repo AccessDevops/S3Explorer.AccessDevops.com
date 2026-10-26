@@ -14,8 +14,12 @@ watch(() => route.path, () => {
 
 const nav = [
   { label: 'Home', to: '/', exact: true },
-  { label: 'Buy', to: '/buy', exact: false },
-  { label: 'News', to: '/news', exact: false },
+  // Trailing slashes deliberate: `site.trailingSlash` makes `/buy/` the
+  // canonical, and `/buy` only 301s to it. Linking to the short form made
+  // every page in the site spend a redirect on its own navigation, and
+  // Search Console reported the slashless URLs as redirect errors.
+  { label: 'Buy', to: '/buy/', exact: false },
+  { label: 'News', to: '/news/', exact: false },
 ]
 </script>
 

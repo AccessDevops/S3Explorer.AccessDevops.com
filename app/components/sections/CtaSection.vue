@@ -37,7 +37,7 @@ const emit = defineEmits<{
             @download="(u, f) => emit('download', u, f)"
           />
           <Button as-child variant="outline" size="lg">
-            <NuxtLink to="/buy">
+            <NuxtLink to="/buy/">
               Get a license
               <PhArrowRight :size="16" />
             </NuxtLink>

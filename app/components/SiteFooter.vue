@@ -23,8 +23,8 @@ const year = new Date().getFullYear()
           <h3 class="text-sm font-semibold">Product</h3>
           <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><NuxtLink to="/" class="hover:text-foreground">Home</NuxtLink></li>
-            <li><NuxtLink to="/buy" class="hover:text-foreground">Buy a license</NuxtLink></li>
-            <li><NuxtLink to="/news" class="hover:text-foreground">News</NuxtLink></li>
+            <li><NuxtLink to="/buy/" class="hover:text-foreground">Buy a license</NuxtLink></li>
+            <li><NuxtLink to="/news/" class="hover:text-foreground">News</NuxtLink></li>
             <li>
               <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer" class="hover:text-foreground">
                 Downloads
@@ -37,6 +37,12 @@ const year = new Date().getFullYear()
           <h3 class="text-sm font-semibold">Resources</h3>
           <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><NuxtLink to="/guides/" class="hover:text-foreground">Guides</NuxtLink></li>
+            <!-- The only link to this page anywhere on the site. The home
+                 page points at the ten provider guides individually but
+                 never at their index, which left it reachable from the
+                 sitemap alone — a page no link points to is a weak signal
+                 for a crawler that is already rationing this site. -->
+            <li><NuxtLink to="/providers/" class="hover:text-foreground">Provider guides</NuxtLink></li>
             <li><NuxtLink to="/about/" class="hover:text-foreground">About</NuxtLink></li>
             <li>
               <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-foreground">
