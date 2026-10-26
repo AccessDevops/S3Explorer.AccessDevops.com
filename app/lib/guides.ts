@@ -25,6 +25,19 @@ const attr = (s: string) => s.replace(/&(?!amp;|lt;|gt;|quot;|#39;)/g, '&amp;').
 // Outbound links that stay followed: our own repositories and the author.
 const OWN_HOSTS = ['https://github.com/AccessDevops/', 'https://cbarange.com']
 
+// A table wider than the column has to scroll on its own rather than push
+// the page sideways, and the wrapper is the only way to give it its own
+// scroll context — `overflow-x` on a <table> fights `border-collapse`.
+md.use({
+  hooks: {
+    postprocess(html: string) {
+      return html
+        .replace(/<table>/g, '<div class="table-scroll"><table>')
+        .replace(/<\/table>/g, '</table></div>')
+    },
+  },
+})
+
 md.use({
   renderer: {
     // The page owns the only <h1>. A `#` in a guide becomes an <h2>.

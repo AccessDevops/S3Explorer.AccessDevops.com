@@ -117,4 +117,43 @@
   .guide-body hr {
     @apply my-10 border-border;
   }
+
+  /* Tables had no styling at all, so Markdown rendered them as bare rows
+     with nothing to separate the columns — unreadable on the pricing guide,
+     which is the one page that brings readers. Same vocabulary as `pre` and
+     `img` above: rounded-xl, one border, muted fill. */
+  .table-scroll {
+    @apply -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0;
+  }
+  .guide-body table {
+    /* `border-separate` rather than `border-collapse`: a collapsed table
+       draws its borders over the rounded corners and squares them off. */
+    @apply w-full overflow-hidden rounded-xl border border-border text-sm;
+    border-spacing: 0;
+  }
+  .guide-body thead {
+    @apply bg-muted/60;
+  }
+  .guide-body th {
+    @apply whitespace-nowrap border-b border-border px-4 py-3 text-left align-bottom font-semibold text-foreground;
+  }
+  /* The leading cell of a row names it, so it reads as a header even though
+     Markdown cannot emit <th scope="row">. */
+  .guide-body td:first-child {
+    @apply font-medium text-foreground;
+  }
+  .guide-body td {
+    @apply border-b border-border px-4 py-3 align-top;
+  }
+  .guide-body tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .guide-body tbody tr:hover {
+    @apply bg-muted/30;
+  }
+  /* Vertical rules between columns, not around the table. */
+  .guide-body th + th,
+  .guide-body td + td {
+    @apply border-l border-border;
+  }
 }

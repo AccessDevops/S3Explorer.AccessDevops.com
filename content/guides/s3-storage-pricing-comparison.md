@@ -11,21 +11,26 @@ Prices below are the public pay-as-you-go list prices on October 15, 2026, in US
 
 ## Price list
 
-| | AWS S3 Standard | Cloudflare R2 Standard | Backblaze B2 | Wasabi |
+| | AWS S3 | Cloudflare R2 | Backblaze B2 | Wasabi |
 |---|---|---|---|---|
-| Storage per TB-month (1,000 GB) | $23 ($0.023/GB, first 50 TB) | $15 ($0.015/GB) | $6.95 | $7.99 |
-| Egress to internet | $0.09/GB after the first 100 GB/month | Free | Free up to 3× average stored, then $0.01/GB | Free if it stays within the volume stored |
-| Writes (PUT, LIST…) | $0.005 per 1,000 | $4.50 per million | Free (Class A) | Free |
-| Reads (GET…) | $0.0004 per 1,000 | $0.36 per million | Free (Class B and C); Class D $0.004 per 10,000 after 2,500/day | Free |
-| Free tier | 100 GB/month egress (all AWS) | 10 GB storage, 1M writes, 10M reads/month | First 10 GB storage | None |
-| Minimums | None for Standard | None for Standard | None | 1 TB billed per month, 90 days per object, 4 KB per object |
+| Storage per TB-month | **$23.00** | **$15.00** | **$6.95** | **$7.99** |
+| Egress to internet | $0.09/GB | Free | Free to 3× | Included |
+| Writes per million | $5.00 | $4.50 | Free | Free |
+| Reads per million | $0.40 | $0.36 | Free | Free |
+| Free tier | 100 GB egress | 10 GB + 1M writes | 10 GB storage | — |
+| Minimum billed | — | — | — | 1 TB · 90 days |
+
+Request prices are shown per million throughout so the rows compare directly;
+AWS and Backblaze publish theirs per thousand and per class. Every figure above
+has a condition attached — the next section lists the ones that change a bill.
 
 ## The minimums that change the bill
 
 - **Wasabi** bills at least 1 TB of storage each month, and an object deleted before 90 days is billed for the remaining days. Free egress and API calls are under a fair-use policy: egress above the stored volume, or heavy API load from non-validated applications, can lead to service limits.
 - **Backblaze B2** egress above three times the average stored volume costs $0.01/GB.
 - **Cloudflare R2** Infrequent Access is cheaper to store ($0.01/GB) but has a 30-day minimum and a $0.01/GB retrieval fee.
-- **AWS** egress through other AWS services and CloudFront is priced differently from direct internet egress.
+- **AWS** storage is $0.023/GB for the first 50 TB, less above that, and the 100 GB of free egress is shared across every service in the account. Egress to other AWS services and to CloudFront is priced differently from egress to the internet.
+- **Backblaze B2** reads are free for Class B and C; Class D costs $0.004 per 10,000 beyond 2,500 a day.
 
 ## Example: 1,000 GB stored, 1,000 GB downloaded per month
 
@@ -33,12 +38,18 @@ Storage plus internet egress only, list prices, request costs left out:
 
 | | Storage | Egress | Total |
 |---|---|---|---|
-| AWS S3 | 1,000 GB × $0.023 = $23.00 | 900 GB × $0.09 = $81.00 (100 GB free) | ≈ $104 |
-| Cloudflare R2 | 990 GB × $0.015 = $14.85 (10 GB free) | $0 | ≈ $15 |
-| Backblaze B2 | 990 GB × $0.00695 = $6.88 (10 GB free) | $0 (within 3×) | ≈ $7 |
-| Wasabi | $7.99 | $0 (within policy) | ≈ $8 |
+| AWS S3 | $23.00 | $81.00 | **≈ $104** |
+| Cloudflare R2 | $14.85 | $0 | **≈ $15** |
+| Backblaze B2 | $6.88 | $0 | **≈ $7** |
+| Wasabi | $7.99 | $0 | **≈ $8** |
 
-AWS's free 100 GB of egress is shared across all AWS services in the account.
+AWS bills 900 GB of egress once the free 100 GB is used. R2 and B2 bill 990 GB
+of storage, their first 10 GB being free. B2 and Wasabi egress is free here
+because 1,000 GB out stays inside their allowances — triple the stored volume
+for B2, the stored volume itself for Wasabi.
+
+**AWS costs fifteen times Backblaze B2 for the same workload**, and nearly all
+of the difference is egress, not storage.
 
 With a small dataset, the picture changes: 100 GB on Wasabi is still billed as 1 TB, while R2 and B2 charge for what is stored.
 
