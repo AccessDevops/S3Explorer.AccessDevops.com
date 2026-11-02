@@ -35,19 +35,27 @@ The limit is navigation. A console lists a page of keys at a time, and finding o
 
 ## Option 3: a desktop client
 
-[S3 Explorer](/) connects with your own credentials and opens an object in place, without writing it to disk first. Five kinds of file open in the window:
+[S3 Explorer](/) connects with your own credentials and opens an object in place, without writing it to disk first.
 
-| File | What opens |
-|---|---|
-| Text, code, JSON, YAML, CSV, logs | Syntax-highlighted editor; edits save back to the same key |
-| Images | Viewer that also crops, rotates and annotates, saving as PNG or JPEG |
-| PDF | Rendered inline |
-| Audio | Player |
-| Video | Player |
+Text, code, JSON, YAML, CSV and logs open in a syntax-highlighted editor, with a minimap for long files and an Edit button that writes back to the same key.
 
-Anything else offers a download rather than pretending to render it.
+![S3 Explorer viewing config.json from the preview-demo bucket, line numbers and JSON syntax colouring, with Fullscreen and Edit buttons](/images/guides/s3-viewer-preview-files/preview-text.png "=900x600")
 
-Large objects are guarded rather than loaded blindly: past a size you set in the settings it warns before fetching, and past a second threshold it stops and offers the download instead. That matters on video, where a preview means pulling a large object over the network.
+Images open in a viewer that also crops, rotates and annotates, saving the result as PNG or JPEG.
+
+![S3 Explorer viewing image.png, the image displayed full width with an Edit Image button above it](/images/guides/s3-viewer-preview-files/preview-image.png "=900x600")
+
+Video and audio play in the window instead of being fetched first.
+
+![S3 Explorer playing video.mp4, 3.06 MB, with transport and volume controls over the frame](/images/guides/s3-viewer-preview-files/preview-video.png "=900x600")
+
+![S3 Explorer playing audio.mp3, 157.19 KB, with a seek bar showing 00:02 of 00:10](/images/guides/s3-viewer-preview-files/preview-audio.png "=900x600")
+
+PDF renders inline. Anything else offers a download rather than pretending to show it.
+
+The same dialog carries tabs for metadata, versions, permissions, tags, response headers and an event log, so working out why an object behaves oddly does not mean leaving the viewer.
+
+Large objects are guarded rather than loaded blindly: past a size set in the settings it warns before fetching, and past a second threshold it stops and offers the download instead.
 
 It keeps a local index of the bucket, so searching a bucket with millions of objects does not mean paging through listings. The free version has every feature, with up to 5 connection profiles.
 
@@ -73,3 +81,7 @@ aws s3 cp s3://my-bucket/report.pdf s3://my-bucket/report.pdf \
 ```
 
 S3 Explorer compares the stored type against the file itself when it opens an object. When the two disagree it says so and offers the correct type in one click, which is quicker than the copy-over-itself trick above and finds the problem on files you had not thought to check.
+
+![S3 Explorer showing broken-type.png stored as application/octet-stream, a Content-Type Mismatch Detected warning saying the extension suggests image/png, a Change to image/png button, and a Load as Image button below](/images/guides/s3-viewer-preview-files/content-type-mismatch.png "=900x600")
+
+Note the second button. Changing the stored type edits the object's metadata, which you may not want on someone else's bucket; loading it as an image leaves the object untouched and shows it anyway.
