@@ -49,7 +49,7 @@ Credentials are encrypted on the machine and sent only to the configured endpoin
 
 - Multipart and parallel transfers, drag and drop
 - Preview for images, video and audio; built-in text and image editor
-- Object versions, tags, metadata, presigned URLs
+- Object versions, tags, metadata, [presigned URLs](/guides/share-s3-file-presigned-url/)
 - Cleanup of incomplete multipart uploads
 - Per-request metrics with cost estimates
 

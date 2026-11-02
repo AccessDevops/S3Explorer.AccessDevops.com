@@ -39,7 +39,7 @@ useHead({
           '@id': `${pageUrl}#author`,
           'name': 'Clement Baranger',
           'url': 'https://cbarange.com/',
-          'sameAs': ['https://cbarange.com/', 'https://github.com/cbarange'],
+          'sameAs': ['https://cbarange.com/', 'https://github.com/cbarange', 'https://blog.accessdevops.com/'],
           'worksFor': { '@id': `${SITE.domain}/#org` },
         },
         {

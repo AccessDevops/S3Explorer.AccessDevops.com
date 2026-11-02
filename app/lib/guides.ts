@@ -22,8 +22,8 @@ const md = new Marked({ gfm: true })
 
 const attr = (s: string) => s.replace(/&(?!amp;|lt;|gt;|quot;|#39;)/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-// Outbound links that stay followed: our own repositories and the author.
-const OWN_HOSTS = ['https://github.com/AccessDevops/', 'https://cbarange.com']
+// Outbound links that stay followed: our own repositories, our blog and the author.
+const OWN_HOSTS = ['https://github.com/AccessDevops/', 'https://blog.accessdevops.com', 'https://cbarange.com']
 
 // A table wider than the column has to scroll on its own rather than push
 // the page sideways, and the wrapper is the only way to give it its own

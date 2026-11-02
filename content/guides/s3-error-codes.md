@@ -41,7 +41,9 @@ Signatures are time-stamped. Sync the clock of the client machine (NTP), or of t
 
 The keys are valid but not allowed to do this operation on this bucket. Check the IAM or bucket policy, the key's scope (Backblaze and R2 keys can be limited to one bucket), and whether listing all buckets is allowed: a key without `ListAllMyBuckets` can still use a bucket you name directly.
 
-A 403 on a connection that worked an hour earlier often means temporary credentials (STS) have expired.
+A 403 on a connection that worked an hour earlier often means temporary credentials (STS) have expired. Presigned links stop early for the same reason: see [why a presigned URL expires before its time](/guides/share-s3-file-presigned-url/).
+
+When both the IAM policy and the bucket policy allow the request and S3 still refuses it, another layer is refusing it: an explicit `Deny` anywhere, an organisation SCP, a permissions boundary, or the KMS key policy of an encrypted object. Across two accounts, both policies must allow. [When two policies allow and the request still fails](https://blog.accessdevops.com/blog/bucket-policy-allow-still-denied) walks through the order S3 checks them in.
 
 ## Connection works but listing fails: addressing style
 
