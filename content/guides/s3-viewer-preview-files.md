@@ -35,7 +35,19 @@ The limit is navigation. A console lists a page of keys at a time, and finding o
 
 ## Option 3: a desktop client
 
-[S3 Explorer](/) connects with your own credentials and opens an object in place: text and code in a syntax-highlighted editor, images in a viewer that also crops, rotates and annotates. Edits are written back to the same key.
+[S3 Explorer](/) connects with your own credentials and opens an object in place, without writing it to disk first. Five kinds of file open in the window:
+
+| File | What opens |
+|---|---|
+| Text, code, JSON, YAML, CSV, logs | Syntax-highlighted editor; edits save back to the same key |
+| Images | Viewer that also crops, rotates and annotates, saving as PNG or JPEG |
+| PDF | Rendered inline |
+| Audio | Player |
+| Video | Player |
+
+Anything else offers a download rather than pretending to render it.
+
+Large objects are guarded rather than loaded blindly: past a size you set in the settings it warns before fetching, and past a second threshold it stops and offers the download instead. That matters on video, where a preview means pulling a large object over the network.
 
 It keeps a local index of the bucket, so searching a bucket with millions of objects does not mean paging through listings. The free version has every feature, with up to 5 connection profiles.
 
@@ -60,10 +72,4 @@ aws s3 cp s3://my-bucket/report.pdf s3://my-bucket/report.pdf \
   --content-type application/pdf --metadata-directive REPLACE
 ```
 
-S3 Explorer does the same thing from the context menu, which is quicker when a whole prefix was uploaded with the wrong type.
-
-## What is worth previewing
-
-Text, JSON, YAML, CSV, logs and source files read directly. Images display. PDFs depend on the browser.
-
-Video and audio are the awkward case: a preview means a ranged read of a large object, and over a slow link it is usually faster to fetch the file than to scrub it remotely.
+S3 Explorer compares the stored type against the file itself when it opens an object. When the two disagree it says so and offers the correct type in one click, which is quicker than the copy-over-itself trick above and finds the problem on files you had not thought to check.
