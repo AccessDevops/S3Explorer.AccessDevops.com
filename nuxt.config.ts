@@ -103,7 +103,7 @@ export default defineNuxtConfig({
       // pages are indexed and ranking too low to be clicked. The long tail
       // ("s3 browser linux", "ceph s3 browser", "opensource s3 browser")
       // says the market noun is "browser", which appeared nowhere here.
-      title: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2',
+      title: 'S3 Explorer — Desktop S3 Browser & Viewer for AWS, MinIO',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -113,7 +113,7 @@ export default defineNuxtConfig({
         // were — and "linux", "ubuntu" and "windows" show up repeatedly in
         // Search Console (s3 explorer linux, s3 browser ubuntu, ubuntu s3
         // client gui). They now sit inside the visible part.
-        { name: 'description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse, edit and navigate millions of objects across all your buckets. Windows, macOS, Linux.' },
+        { name: 'description', content: 'The modern S3 browser and viewer for S3-compatible storage. Browse, preview and edit millions of objects across AWS S3, MinIO and R2. Windows, macOS, Linux.' },
         // Theme color matches the dark mode background; light mode browsers
         // will render the chrome in their own neutral color.
         { name: 'theme-color', content: '#020817', media: '(prefers-color-scheme: dark)' },
@@ -143,8 +143,8 @@ export default defineNuxtConfig({
         { property: 'og:image:height', content: '630' },
         { property: 'og:image:alt', content: 'S3 Explorer — desktop app for S3-compatible storage' },
         { property: 'og:url', content: 'https://s3explorer.accessdevops.com' },
-        { property: 'og:title', content: 'S3 Explorer — Desktop S3 Browser for AWS S3, MinIO & R2' },
-        { property: 'og:description', content: 'The modern S3 browser desktop client for S3-compatible storage. Browse millions of objects across all your buckets. Windows, macOS & Linux.' },
+        { property: 'og:title', content: 'S3 Explorer — Desktop S3 Browser & Viewer for AWS, MinIO' },
+        { property: 'og:description', content: 'The modern S3 browser and viewer for S3-compatible storage. Browse and preview millions of objects across all your buckets. Windows, macOS & Linux.' },
         { property: 'og:image', content: 'https://s3explorer.accessdevops.com/og-image.png' },
         // No twitter:title / twitter:description here. Defined globally, they
         // were never overridden by the pages, so every page shared the home
