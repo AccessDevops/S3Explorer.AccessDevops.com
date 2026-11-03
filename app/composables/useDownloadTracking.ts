@@ -208,6 +208,13 @@ function classifyTrafficSource(): string {
   try {
     const host = new URL(ref).hostname
     if (host === 's3explorer.accessdevops.com' || host === 'www.s3explorer.accessdevops.com') return 'internal'
+    // Le blog publie un article par jour et pointe vers ce site depuis chacun
+    // d'eux. Les liens écrits dans ses templates portent `utm_source=blog` et
+    // sont déjà classés par la branche utm plus haut ; ceux écrits à la main
+    // dans le Markdown n'en portent pas et tombaient dans `referral`, où ils
+    // se mélangeaient au seul autre lien entrant du site. Sans cette ligne, la
+    // question « le blog ramène-t-il quelqu'un ? » n'a pas de réponse.
+    if (host === 'blog.accessdevops.com') return 'blog'
     const engine = classifyHost(host)
     if (engine) return engine
     if (['facebook.com', 'twitter.com', 'x.com', 'linkedin.com', 'instagram.com', 'reddit.com', 'youtube.com', 't.co', 'l.instagram.com'].some(s => host.endsWith(s))) return 'social'
