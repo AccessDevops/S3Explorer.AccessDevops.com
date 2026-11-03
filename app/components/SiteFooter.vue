@@ -44,6 +44,16 @@ const year = new Date().getFullYear()
                  for a crawler that is already rationing this site. -->
             <li><NuxtLink to="/providers/" class="hover:text-foreground">Provider guides</NuxtLink></li>
             <li><NuxtLink to="/about/" class="hover:text-foreground">About</NuxtLink></li>
+            <!-- The blog publishes daily and links back here from every
+                 article, but nothing on this site linked to it except two
+                 guides mid-paragraph. A sitewide link is how a new subdomain
+                 gets discovered and how it inherits any authority this one
+                 has; without it the blog stands alone on a single backlink. -->
+            <li>
+              <a href="https://blog.accessdevops.com/" rel="noopener" class="hover:text-foreground">
+                Blog
+              </a>
+            </li>
             <li>
               <a :href="REPO.releasesUrl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-foreground">
                 <PhGithubLogo :size="14" /> GitHub
