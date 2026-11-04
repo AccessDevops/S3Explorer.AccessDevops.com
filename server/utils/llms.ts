@@ -42,6 +42,8 @@ ${providers.join('\n')}
 - [Download](${SITE}/): platform-detected download for Windows, macOS and Linux.
 - [Pricing](${SITE}/buy/): free tier and licence options.
 - [Release notes](${SITE}/news/): every version with its changelog.
+- [Privacy](${SITE}/privacy/): what the app measures, what never leaves the machine, how to turn it off.
+- [Security](${SITE}/security/): where credentials are stored and every host the app contacts.
 
 ## Optional
 

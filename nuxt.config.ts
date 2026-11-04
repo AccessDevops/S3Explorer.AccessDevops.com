@@ -188,7 +188,7 @@ export default defineNuxtConfig({
       // becomes readable after hydration — which a crawler never waits for.
       // public/404.html is a hand-written static page instead, and Netlify
       // serves it for unmatched paths now that the catch-all is narrowed.
-      routes: ['/', '/buy', '/news', '/about', '/providers', ...PROVIDER_ROUTES, '/guides', ...GUIDE_ROUTES, '/guides/rss.xml', '/llms.txt', '/llms-full.txt'],
+      routes: ['/', '/buy', '/news', '/about', '/privacy', '/security', '/terms', '/providers', ...PROVIDER_ROUTES, '/guides', ...GUIDE_ROUTES, '/guides/rss.xml', '/llms.txt', '/llms-full.txt'],
     },
   },
 
@@ -215,6 +215,9 @@ export default defineNuxtConfig({
       { loc: '/buy/', lastmod: BUILD_TIME },
       { loc: '/about/', lastmod: BUILD_TIME },
       { loc: '/news/', lastmod: BUILD_TIME },
+      { loc: '/privacy/', lastmod: BUILD_TIME },
+      { loc: '/security/', lastmod: BUILD_TIME },
+      { loc: '/terms/', lastmod: BUILD_TIME },
       // Hub first, then one guide per documented provider. Dynamic routes are
       // invisible to the module's auto-discovery, so they are listed here.
       { loc: '/providers/', lastmod: BUILD_TIME },

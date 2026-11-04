@@ -70,6 +70,14 @@ const year = new Date().getFullYear()
 
       <div class="mt-10 flex flex-col items-start justify-between gap-2 border-t border-border/50 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
         <p>&copy; {{ year }} AccessDevops. All rights reserved.</p>
+        <!-- Legal links live in the bottom bar rather than in a fourth column:
+             the grid above is md:grid-cols-4 with the brand block spanning two,
+             so a new column would shift the link columns on every breakpoint. -->
+        <p class="flex items-center gap-3">
+          <NuxtLink to="/privacy/" class="hover:text-foreground">Privacy</NuxtLink>
+          <NuxtLink to="/security/" class="hover:text-foreground">Security</NuxtLink>
+          <NuxtLink to="/terms/" class="hover:text-foreground">Terms</NuxtLink>
+        </p>
         <p>
           made with ❤️ by
           <a
@@ -81,7 +89,6 @@ const year = new Date().getFullYear()
             cbarange
           </a>
         </p>
-        <p>Made with care for developers and ops teams.</p>
       </div>
     </div>
   </footer>
