@@ -86,8 +86,8 @@ useHead({
       <h2>Turning it off</h2>
       <p>
         Open <strong>Settings → Advanced → Privacy</strong> and clear the telemetry checkbox.
-        Nothing is sent after that, the clipboard is no longer read on a fresh install,
-        and anything still waiting to be sent is deleted from your machine.
+        Nothing is sent after that, and anything still waiting to be sent is deleted
+        from your machine.
       </p>
 
       <h2>This website</h2>
