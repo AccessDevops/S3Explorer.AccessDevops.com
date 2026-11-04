@@ -164,3 +164,9 @@ tmp
 # - package-lock.json → committed (deterministic install)
 # - public/ → committed (static assets served by Nuxt)
 # - .gitignore (this file) → committed
+
+# Video masters. public/demo.mp4 is the exported file the site serves and is
+# committed; the source recording is not. Git keeps every version of a binary
+# forever and video does not delta-compress, so each re-export would add its
+# full weight to a repository Netlify re-clones on every build.
+screenshoots/*.mov
