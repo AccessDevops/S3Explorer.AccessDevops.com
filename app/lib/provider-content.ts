@@ -40,6 +40,8 @@ export interface ProviderContent {
   /** Two or three sentences opening the page. */
   intro: string
   example: ProviderExample
+  /** false while the three screenshots are missing; the section is hidden. */
+  screenshots?: boolean
   gotchas: Gotcha[]
 }
 
@@ -291,6 +293,36 @@ export const PROVIDER_CONTENT: Record<string, ProviderContent> = {
         body: '7480 is the default, but deployments routinely put the gateway behind nginx or HAProxy on 80 and 443. Ask for the published endpoint rather than assuming the default.',
       },
     ],
+  },
+
+  'france-nuage': {
+    summary: 'Connect S3 Explorer to France Nuage: one fixed endpoint, path-style addressing, Ceph RADOS Gateway keys, and a region field that is only a label.',
+    intro: 'France Nuage runs S3-compatible object storage on Ceph RADOS Gateway, hosted in France. There is a single endpoint and no region in the hostname, so the region field is a label the gateway accepts rather than a place your data goes. Obtaining keys is the slow part: object storage does not appear on the published price list.',
+    example: {
+      endpoint: 'https://s3.france-nuage.fr',
+      accessKey: 'FNEXAMPLEACCESSKEY00',
+      secretKey: 'EXAMPLEfranceNuageSecretDoNotUse01234567',
+      addressing: 'Path-style',
+      note: 'RADOS Gateway issues a 20-character access key and a 40-character secret, so a real pair has this shape without being this pair.',
+    },
+    gotchas: [
+      {
+        title: 'The region is a label, not a location',
+        body: 'A single endpoint serves the whole service, so the region never reaches DNS. S3 Explorer sends us-east-1, which RADOS Gateway deployments commonly accept as their default zonegroup name. If a request comes back complaining about the region, try default instead — the data stays in France either way.',
+      },
+      {
+        title: 'No bucket notifications',
+        body: 'France Nuage states that its gateway ships without native SNS, SQS or Lambda triggers. Nothing in S3 Explorer depends on them, but a workflow built around S3 events elsewhere has to be rebuilt around polling here.',
+      },
+      {
+        title: 'Keys may go through a sales conversation',
+        body: 'Object storage is absent from the public pricing page, and the storage page offers a quote or a demo rather than a sign-up. Budget for that exchange before planning a migration: the connection takes a minute, getting the credentials may not.',
+      },
+    ],
+    // No capture yet: this provider shipped after the 0.3.9 screenshot pass.
+    // Take search.png (896x261), form-top.png and form-bottom.png (672x901)
+    // into public/images/providers/france-nuage/, then delete this line.
+    screenshots: false,
   },
 
   // ------------------------------------------------------------ enterprise
