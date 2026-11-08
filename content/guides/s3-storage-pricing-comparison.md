@@ -61,6 +61,8 @@ With a small dataset, the picture changes: 100 GB on Wasabi is still billed as 1
 
 All four speak the S3 API, so the same client works with each; see the [connection guides](/providers/).
 
+Egress is also the line the law is about to change: [what the EU Data Act does to switching charges in 2027](/guides/s3-in-2027-readiness/) covers what becomes free and what stays billable.
+
 ## Sources
 
 - [AWS price list API, S3 us-east-1](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json) and [data transfer](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/us-east-1/index.json); [Amazon S3 pricing](https://aws.amazon.com/s3/pricing/)

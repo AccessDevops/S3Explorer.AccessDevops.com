@@ -65,6 +65,8 @@ Uploads completed within the period are not affected, and the rule applies only 
 - **Cloudflare R2** aborts incomplete multipart uploads automatically after 7 days by default; a lifecycle policy can change the delay.
 - **Other providers** differ in lifecycle support. Check their S3 compatibility page, and fall back to listing and aborting manually.
 
+Orphaned parts are also the first thing to clear before a provider move: [the EU Data Act removes switching charges on 12 January 2027](/guides/s3-in-2027-readiness/), and you do not want to pay to export parts you never meant to keep.
+
 ## Sources
 
 - [AWS: uploading objects using multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html) (billing of parts)
