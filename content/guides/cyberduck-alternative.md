@@ -5,7 +5,7 @@ published: 2026-10-15
 providers: [aws, minio, cloudflare, wasabi, backblaze]
 ---
 
-**In short:** Cyberduck is a free, open-source file transfer client for macOS and Windows that handles S3 alongside FTP, SFTP, WebDAV and cloud drives. S3 Explorer is dedicated to S3: it adds Linux, presets for 25 S3-compatible providers and a local index for very large buckets, but does not do other protocols.
+**In short:** Cyberduck is a free, open-source file transfer client for macOS and Windows that handles S3 alongside FTP, SFTP, WebDAV and cloud drives. S3 Explorer is dedicated to S3: it adds Linux, presets for 26 S3-compatible providers and a local index for very large buckets, but does not do other protocols.
 
 ## At a glance
 
@@ -15,7 +15,7 @@ providers: [aws, minio, cloudflare, wasabi, backblaze]
 | Linux | Command-line client (`duck`) only | Native app (AppImage, .deb, .rpm) |
 | Protocols | S3, FTP, SFTP, WebDAV, SMB, Azure, Google Drive, Dropbox, OneDrive and more | S3 and S3-compatible only |
 | License | Free software (GPL), donation prompt removed with a key from a 10 USD donation | Free with all features, 5 profiles; 11.50 € lifetime licence removes the limit |
-| S3-compatible providers | Connection profiles installed from Preferences → Profiles | 25 built-in presets + custom endpoint |
+| S3-compatible providers | Connection profiles installed from Preferences → Profiles | 26 built-in presets + custom endpoint |
 | Path-style servers | A separate "deprecated path style" profile or a hidden setting | Set per connection, locked where the provider requires it |
 | Large buckets | Lists folders on demand | Local index for search across millions of objects |
 

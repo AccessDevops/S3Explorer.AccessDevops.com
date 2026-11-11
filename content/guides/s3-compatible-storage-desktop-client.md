@@ -1,13 +1,13 @@
 ---
 title: One desktop client for every S3-compatible storage
-description: Managing AWS S3, Cloudflare R2, Backblaze B2, MinIO or Garage at once? A desktop S3 browser with 25 provider presets and a local index for large buckets.
+description: Managing AWS S3, Cloudflare R2, Backblaze B2, MinIO or Garage at once? A desktop S3 browser with 26 provider presets and a local index for large buckets.
 published: 2026-10-15
-providers: [aws, cloudflare, backblaze, wasabi, minio, ceph, gcs, digitalocean, ovhcloud, garage, seaweedfs]
+providers: [aws, cloudflare, backblaze, wasabi, minio, ceph, gcs, digitalocean, ovhcloud, garage, seaweedfs, clever-cloud]
 image: /images/guides/s3-compatible-storage-desktop-client/og.png
 imageAlt: S3 Explorer provider picker with 25 S3-compatible presets
 ---
 
-**In short:** S3 Explorer is a desktop S3 browser for Windows, macOS and Linux that connects to Amazon S3 and S3-compatible storage (Cloudflare R2, Backblaze B2, MinIO, Garage and more) from one interface, with 25 provider presets and a local index for buckets with millions of objects.
+**In short:** S3 Explorer is a desktop S3 browser for Windows, macOS and Linux that connects to Amazon S3 and S3-compatible storage (Cloudflare R2, Backblaze B2, MinIO, Garage and more) from one interface, with 26 provider presets and a local index for buckets with millions of objects.
 
 ## The problem
 
@@ -21,7 +21,7 @@ All of these speak the S3 API, but each has its own web console, its own quirks 
 
 ## Connect to any provider
 
-S3 Explorer is a desktop S3 browser for Windows, macOS and Linux (x64 and ARM64). 25 presets fill in the endpoint format, regions and addressing mode: AWS S3, Google Cloud Storage, Cloudflare R2, Backblaze B2, Wasabi, DigitalOcean Spaces, OVHcloud, Scaleway, Hetzner, MinIO, Ceph RGW, Garage, SeaweedFS, Dell ECS and more. Any other service works through a custom endpoint.
+S3 Explorer is a desktop S3 browser for Windows, macOS and Linux (x64 and ARM64). 26 presets fill in the endpoint format, regions and addressing mode: AWS S3, Google Cloud Storage, Cloudflare R2, Backblaze B2, Wasabi, DigitalOcean Spaces, OVHcloud, Scaleway, Hetzner, MinIO, Ceph RGW, Garage, SeaweedFS, Dell ECS and more. Any other service works through a custom endpoint.
 
 ![S3 Explorer provider picker showing 25 S3-compatible presets including Amazon S3, Cloudflare R2, Backblaze B2, MinIO, Garage and SeaweedFS](/images/guides/s3-compatible-storage-desktop-client/provider-picker.png "=894x674")
 

@@ -22,7 +22,7 @@ A documented quirk: buckets shared from another account, or buckets you are not 
 | Platforms | Windows | Windows, macOS, Linux |
 | License | Free, GPL v3 | Free with all features, 5 profiles; licence 11.50 € lifetime |
 | Protocols | SFTP, FTP, WebDAV, SCP, S3 | S3 and S3-compatible only |
-| S3-compatible setup | Endpoint per provider guide | 25 built-in presets + custom endpoint |
+| S3-compatible setup | Endpoint per provider guide | 26 built-in presets + custom endpoint |
 | Automation | Scripting, .NET assembly | Not the focus |
 | Object versions, tags, metadata | Not covered in its S3 guide | Browse and manage |
 | Large buckets | Folder listing | Local index for search |

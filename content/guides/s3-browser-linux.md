@@ -27,7 +27,7 @@ The well-known S3 GUIs are not available on Linux:
 
 On Ubuntu: download the `.deb` from the [releases page](https://github.com/AccessDevops/S3Explorer/releases/latest) and install it with `sudo apt install ./S3.Explorer_<version>_amd64.deb`.
 
-It connects to AWS S3 and S3-compatible storage with 25 provider presets, and keeps a local index for searching buckets with millions of objects. The free version has every feature, with up to 5 connection profiles.
+It connects to AWS S3 and S3-compatible storage with 26 provider presets, and keeps a local index for searching buckets with millions of objects. The free version has every feature, with up to 5 connection profiles.
 
 ## Option 2: rclone's web GUI
 

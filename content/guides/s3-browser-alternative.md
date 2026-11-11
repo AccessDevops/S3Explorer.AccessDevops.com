@@ -19,7 +19,7 @@ S3 Browser, the long-standing Windows client for Amazon S3, was renamed **CS Bro
 | Paid licence | $49.99 per computer (list price $59.99) | 11.50 € lifetime, or 1.99 €/month |
 | Updates included | 1 year, then a new purchase | Lifetime (lifetime licence) |
 | Devices per licence | 1 computer, transferable | Up to 5 active devices (lifetime) |
-| Provider presets | Custom endpoint for S3-compatible services | 25 presets + custom endpoint |
+| Provider presets | Custom endpoint for S3-compatible services | 26 presets + custom endpoint |
 
 Sources: the [CS Browser Free vs Pro page](https://s3browser.com/s3-browser-free-vs-pro.aspx) and [Pro pricing](https://s3browser.com/buypro.aspx), and the [S3 Explorer licence page](/buy/).
 
@@ -54,7 +54,7 @@ S3 Explorer runs on Windows, macOS (Intel and Apple Silicon) and Linux (AppImage
 
 Both connect to Amazon S3 and to S3-compatible services through a custom endpoint.
 
-S3 Explorer adds 25 presets that fill in the endpoint format, regions and addressing mode: Cloudflare R2, Backblaze B2, Wasabi, MinIO, Ceph, Google Cloud Storage, DigitalOcean Spaces, OVHcloud, Scaleway, Hetzner, Garage, SeaweedFS and more. See the [provider guides](/providers/).
+S3 Explorer adds 26 presets that fill in the endpoint format, regions and addressing mode: Cloudflare R2, Backblaze B2, Wasabi, MinIO, Ceph, Google Cloud Storage, DigitalOcean Spaces, OVHcloud, Scaleway, Hetzner, Garage, SeaweedFS and more. See the [provider guides](/providers/).
 
 ## Where CS Browser goes further
 

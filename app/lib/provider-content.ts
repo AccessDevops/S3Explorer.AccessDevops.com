@@ -325,6 +325,36 @@ export const PROVIDER_CONTENT: Record<string, ProviderContent> = {
     screenshots: false,
   },
 
+  'clever-cloud': {
+    summary: 'Connect S3 Explorer to Clever Cloud Cellar: one fixed endpoint, keys from the add-on dashboard, an empty region, and path-style for dotted bucket names.',
+    intro: 'Cellar is the S3-compatible object storage add-on of Clever Cloud. Every add-on uses the same endpoint and Cellar ignores the region, so the only values that change from one account to the next are the key ID and the secret, both shown in the add-on dashboard of the Clever Cloud console.',
+    example: {
+      endpoint: 'https://cellar-c2.services.clever-cloud.com',
+      accessKey: 'CCEXAMPLEACCESSKEY00',
+      secretKey: 'EXAMPLEcleverCloudSecretDoNotUse01234567',
+      addressing: 'Virtual-hosted',
+      note: 'Fabricated keys. The preset follows the Cellar documentation; it has not yet been tested against a live Cellar account.',
+    },
+    gotchas: [
+      {
+        title: 'Leave the region empty',
+        body: 'Cellar does not use the region, and Clever Cloud\'s own examples use default, us-east-1 or us-west-1 interchangeably. Left empty, S3 Explorer signs with us-east-1 and creates buckets without a location constraint; typing a region would send one with every bucket creation.',
+      },
+      {
+        title: 'Bucket names with dots',
+        body: 'A custom domain is served from a bucket named exactly like it, such as cdn.example.com. The certificate covers *.cellar-c2.services.clever-cloud.com, one level only, so a dotted name cannot be reached as a virtual host. S3 Explorer switches to path-style for those buckets on its own; other tools may need the option set by hand.',
+      },
+      {
+        title: 'No underscores, one namespace per region',
+        body: 'Bucket names cannot contain an underscore, and they are unique across the whole Cellar region rather than per account: a name another customer already uses is refused.',
+      },
+    ],
+    // No capture yet: this provider shipped after the 0.3.9 screenshot pass.
+    // Take search.png (896x261), form-top.png and form-bottom.png (672x901)
+    // into public/images/providers/clever-cloud/, then delete this line.
+    screenshots: false,
+  },
+
   // ------------------------------------------------------------ enterprise
   'dell-ecs': {
     summary: 'Connect S3 Explorer to Dell EMC ECS: namespace-scoped object users, the 9020/9021 port pair, and the Content-MD5 requirement on batch deletes.',
