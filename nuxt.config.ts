@@ -95,6 +95,31 @@ export default defineNuxtConfig({
           innerHTML: 'window.__s3eEntry={search:location.search,href:location.href,referrer:document.referrer}',
           tagPosition: 'head',
         },
+        {
+          // Theme, chosen before the first paint: applied from onMounted, a
+          // dark page showed light until the bundle loaded, a white flash at
+          // night. Light by default; dark when the visitor picked it with the
+          // header toggle (`s3e-theme`, see app/composables/useDarkMode.ts) or
+          // when the system theme is dark between 23:00 and 07:00 local time,
+          // the same rule as cbarange.com. The inserted theme-color meta comes
+          // before the static one in the document, so the browser chrome
+          // follows the page.
+          innerHTML: `(function () {
+  var stored = null;
+  try { stored = localStorage.getItem('s3e-theme'); } catch (e) {}
+  var hour = new Date().getHours();
+  var dark = stored === 'dark' || stored === 'light'
+    ? stored === 'dark'
+    : (hour >= 23 || hour < 7) && !!window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  if (!dark) return;
+  document.documentElement.classList.add('dark');
+  var meta = document.createElement('meta');
+  meta.name = 'theme-color';
+  meta.content = '#020817';
+  document.head.appendChild(meta);
+})()`,
+          tagPosition: 'head',
+        },
       ],
       // The title is the one place keywords can live without being shown
       // to a reader — invisible by design, and the heaviest on-page signal
@@ -114,10 +139,11 @@ export default defineNuxtConfig({
         // Search Console (s3 explorer linux, s3 browser ubuntu, ubuntu s3
         // client gui). They now sit inside the visible part.
         { name: 'description', content: 'The modern S3 browser and viewer for S3-compatible storage. Browse, preview and edit millions of objects across AWS S3, MinIO and R2. Windows, macOS, Linux.' },
-        // Theme color matches the dark mode background; light mode browsers
-        // will render the chrome in their own neutral color.
-        { name: 'theme-color', content: '#020817', media: '(prefers-color-scheme: dark)' },
-        { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
+        // Browser chrome color of the light page, the default theme. The head
+        // theme script inserts the dark one before it; useDarkMode updates
+        // both on toggle. A `prefers-color-scheme` media pair would paint the
+        // chrome dark over a light page during the day.
+        { name: 'theme-color', content: '#ffffff' },
         // Bing Webmaster Tools site ownership. Bing re-checks this tag
         // periodically, not just once — removing it revokes access to the
         // search performance data. Google's equivalent is the static file
