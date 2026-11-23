@@ -15,7 +15,7 @@ const HEADER = `# S3 Explorer
 
 > S3 Explorer is a desktop S3 browser for Windows, macOS and Linux (x64 and ARM64). It connects to Amazon S3 and any S3-compatible storage (Cloudflare R2, Backblaze B2, Wasabi, MinIO, Ceph, Google Cloud Storage, Garage, SeaweedFS and more) with 26 provider presets, and keeps a local index for instant search in buckets with millions of objects.
 
-- Free for everyone, all features included, up to 5 connection profiles. A licence (11.50 € lifetime or 1.99 €/month) removes the limit.
+- Free for everyone, all features included, up to 5 connection profiles. A licence (11.50 € lifetime or 2.90 €/month) removes the limit.
 - Credentials are encrypted on the user's machine and sent only to the configured endpoint.
 - Built with Rust and Tauri. Signed in-app updates.
 - Source of releases: https://github.com/AccessDevops/S3Explorer

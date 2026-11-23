@@ -16,7 +16,7 @@ S3 Browser, the long-standing Windows client for Amazon S3, was renamed **CS Bro
 | Free edition: S3-compatible accounts | Up to 2 | Up to 5 connection profiles |
 | Free edition: concurrent transfers | Up to 2 per queue | Same setting as the paid edition (1 to 30) |
 | Free edition: features | Some reserved for Pro (see below) | All features |
-| Paid licence | $49.99 per computer (list price $59.99) | 11.50 € lifetime, or 1.99 €/month |
+| Paid licence | $49.99 per computer (list price $59.99) | 11.50 € lifetime, or 2.90 €/month |
 | Updates included | 1 year, then a new purchase | Lifetime (lifetime licence) |
 | Devices per licence | 1 computer, transferable | Up to 5 active devices (lifetime) |
 | Provider presets | Custom endpoint for S3-compatible services | 26 presets + custom endpoint |

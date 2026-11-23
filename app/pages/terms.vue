@@ -88,9 +88,10 @@ useHead({
       <h2>Payment and refunds</h2>
       <p>
         Licences are sold by
-        <a href="https://www.lemonsqueezy.com/" target="_blank" rel="noopener noreferrer">Lemon Squeezy</a>
+        <a href="https://freemius.com/" target="_blank" rel="noopener noreferrer">Freemius</a>
         as merchant of record. They handle payment, invoicing, tax and refunds under their own
-        terms, and their receipt is your proof of purchase. Refund requests go to them.
+        terms, and their receipt is your proof of purchase. A purchase can be refunded within
+        14 days.
       </p>
 
       <h2>Warranty</h2>
