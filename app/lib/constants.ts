@@ -50,30 +50,14 @@ const ISSUE_TEMPLATE = `## Type of report
 export const REPORT_ISSUE_URL
   = `${REPO.url}/issues/new?body=${encodeURIComponent(ISSUE_TEMPLATE)}`
 
-export const LEMON_SQUEEZY = {
-  storeUrl: 'https://s3explorer.lemonsqueezy.com',
-  // Monthly subscription — product 1034880, variant 1623111 (live mode)
-  checkoutMonthly: 'https://s3explorer.lemonsqueezy.com/checkout/buy/f613d0eb-54a7-4f6c-939f-d5d51739f9ab',
-  // Lifetime — product 1034882, variant 1623113 (live mode)
-  checkoutLifetime: 'https://s3explorer.lemonsqueezy.com/checkout/buy/918b4b1f-bc7b-430b-8b65-05cef8abc472',
-}
-
-// Append checkout custom_data to a Lemon Squeezy checkout URL so the values
-// come back in the order webhook payload (under `meta.custom_data`).
-// Lemon Squeezy syntax: ?checkout[custom][key]=value
-// Used to stitch web sessions (referral_id) and identify traffic source
-// (organic, desktop_nag, …) all the way to the purchase event in PostHog.
-export function buildCheckoutUrl(
-  baseUrl: string,
-  customData: Record<string, string | null | undefined>,
-): string {
-  const params = new URLSearchParams()
-  for (const [key, value] of Object.entries(customData)) {
-    if (value) params.set(`checkout[custom][${key}]`, value)
-  }
-  const qs = params.toString()
-  if (!qs) return baseUrl
-  return `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}${qs}`
+// Freemius hosted checkout, product 46044. Monthly: plan 81068 (pricing
+// 122882). Lifetime: plan 81069 (pricing 122878). The dashboard's
+// Plans → "Get Checkout" link is the reference for these URLs.
+// `trial=paid`: without it the checkout charges at once and shows no trial;
+// with it, 5-day trial, card taken up front, charged when the trial ends.
+export const CHECKOUT = {
+  monthly: 'https://checkout.freemius.com/product/46044/plan/81068/?trial=paid',
+  lifetime: 'https://checkout.freemius.com/product/46044/plan/81069/',
 }
 
 export const PRICING = {
@@ -85,7 +69,7 @@ export const PRICING = {
   },
   monthly: {
     label: 'Monthly',
-    price: '1,99 €',
+    price: '2,90 €',
     cadence: '/month',
   },
   lifetime: {

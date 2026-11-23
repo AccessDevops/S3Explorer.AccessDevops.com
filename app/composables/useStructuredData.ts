@@ -4,6 +4,8 @@
 // Reference: https://schema.org/docs/full.html
 // Test with: https://search.google.com/test/rich-results
 
+import { CHECKOUT } from '~/lib/constants'
+
 const SITE_URL = 'https://s3explorer.accessdevops.com'
 
 const ORGANIZATION = {
@@ -83,16 +85,16 @@ export function useHomeStructuredData(version: string) {
             'priceCurrency': 'EUR',
             'description': 'Unlimited profiles, no reminder popup, one-time payment, up to 5 active devices.',
             'availability': 'https://schema.org/InStock',
-            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/918b4b1f-bc7b-430b-8b65-05cef8abc472',
+            'url': CHECKOUT.lifetime,
           },
           {
             '@type': 'Offer',
             'name': 'Monthly Subscription',
-            'price': '1.99',
+            'price': '2.90',
             'priceCurrency': 'EUR',
             'description': 'Unlimited profiles, no reminder popup, billed monthly with 5-day free trial, up to 3 active devices.',
             'availability': 'https://schema.org/InStock',
-            'url': 'https://s3explorer.lemonsqueezy.com/checkout/buy/f613d0eb-54a7-4f6c-939f-d5d51739f9ab',
+            'url': CHECKOUT.monthly,
           },
         ],
         'featureList': [

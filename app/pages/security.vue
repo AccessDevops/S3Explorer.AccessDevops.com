@@ -76,7 +76,7 @@ useHead({
 
       <h2>What else the app contacts</h2>
       <ul>
-        <li><code>api.lemonsqueezy.com</code> — checking that a licence is valid.</li>
+        <li><code>api.freemius.com</code> — checking that a licence is valid.</li>
         <li><code>eu.i.posthog.com</code> — usage analytics, which you can turn off.</li>
         <li><code>github.com</code> — looking for a new version, and downloading it.</li>
         <li><code>www.google.com</code> and <code>www.cloudflare.com</code> — reading the date they return, to notice a clock that has been set back to extend a licence.</li>

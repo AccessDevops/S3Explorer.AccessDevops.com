@@ -9,7 +9,7 @@ import {
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
-import { LEMON_SQUEEZY, SITE, buildCheckoutUrl } from '~/lib/constants'
+import { CHECKOUT, SITE } from '~/lib/constants'
 import { readAppDistinctId, readPersistedReferralId } from '~/composables/useDownloadTracking'
 import { useBuyStructuredData } from '~/composables/useStructuredData'
 
@@ -19,9 +19,9 @@ const { trackPageView, trackBuyCtaClicked, linkAppDistinctId } = useDownloadTrac
 
 useSeoMeta({
   title: 'Get a License — S3 Explorer',
-  description: 'Support S3 Explorer development and unlock unlimited connection profiles. 11,50 € lifetime or 1,99 € per month. The app remains free without a license.',
+  description: 'Support S3 Explorer development and unlock unlimited connection profiles. 11,50 € lifetime or 2,90 € per month. The app remains free without a license.',
   ogTitle: 'Get a License — S3 Explorer',
-  ogDescription: 'Support S3 Explorer development. 11,50 € lifetime or 1,99 €/month. The app stays free.',
+  ogDescription: 'Support S3 Explorer development. 11,50 € lifetime or 2,90 €/month. The app stays free.',
   ogUrl: 'https://s3explorer.accessdevops.com/buy/',
   ogImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
   twitterImage: 'https://s3explorer.accessdevops.com/og-image-buy.png',
@@ -49,8 +49,8 @@ function normalizeSource(raw: string | null | undefined): string {
 
 const trafficSource = ref<string>('organic')
 
-// The id piped to Lemon Squeezy via custom_data so the order webhook can
-// identify the same person in PostHog (web session ↔ checkout ↔ app).
+// The id attached to `buy_cta_clicked`, so the click lands on the same
+// person in PostHog as the web session and the app.
 //
 // The desktop app's own id (`?rid=`) wins over the one persisted at
 // download_clicked: the license will be activated in that app, and the
@@ -72,20 +72,6 @@ function trackCta(tier: 'monthly' | 'lifetime' | 'free') {
   })
 }
 
-// Lemon Squeezy URLs with checkout custom_data — referral_id and source
-// flow into the order webhook payload (meta.custom_data) for end-to-end stitching.
-const monthlyCheckoutUrl = computed(() =>
-  buildCheckoutUrl(LEMON_SQUEEZY.checkoutMonthly, {
-    referral_id: referralId.value,
-    source: trafficSource.value,
-  })
-)
-const lifetimeCheckoutUrl = computed(() =>
-  buildCheckoutUrl(LEMON_SQUEEZY.checkoutLifetime, {
-    referral_id: referralId.value,
-    source: trafficSource.value,
-  })
-)
 
 const tiers = computed(() => [
   {
@@ -108,7 +94,7 @@ const tiers = computed(() => [
   {
     key: 'monthly' as const,
     name: 'Monthly',
-    price: '1,99 €',
+    price: '2,90 €',
     cadence: 'Per month, cancel anytime',
     description: 'Subscribe to support continuous development.',
     features: [
@@ -118,7 +104,7 @@ const tiers = computed(() => [
       { text: '5-day free trial', included: true },
       { text: 'Cancel anytime', included: true },
     ],
-    cta: { label: 'Start 5-day free trial', href: monthlyCheckoutUrl.value, external: true },
+    cta: { label: 'Start 5-day free trial', href: CHECKOUT.monthly, external: true },
     highlight: false,
   },
   {
@@ -134,7 +120,7 @@ const tiers = computed(() => [
       { text: 'Lifetime updates', included: true },
       { text: 'Pay once, no subscription', included: true },
     ],
-    cta: { label: 'Buy lifetime license', href: lifetimeCheckoutUrl.value, external: true },
+    cta: { label: 'Buy lifetime license', href: CHECKOUT.lifetime, external: true },
     highlight: true,
     badge: 'Best value',
   },
@@ -144,7 +130,7 @@ const steps = [
   {
     icon: PhDownloadSimple,
     title: 'Pay & download',
-    description: 'Complete your purchase securely on Lemon Squeezy. The app itself is already free to download.',
+    description: 'Complete your purchase securely on Freemius. The app itself is already free to download. Licenses work with S3 Explorer 0.3.12 or later.',
   },
   {
     icon: PhEnvelope,
@@ -161,7 +147,7 @@ const steps = [
 const faqs = [
   {
     q: 'Is there a refund policy?',
-    a: 'Yes — Lemon Squeezy offers a 14-day money-back guarantee on every purchase. Email us if you have any issue and we\'ll process the refund.',
+    a: 'Yes — purchases can be refunded within 14 days, under the terms of Freemius, who sells the license. Email us if you have any issue and we\'ll process the refund.',
   },
   {
     q: 'How does the device activation limit work?',
@@ -177,7 +163,7 @@ const faqs = [
   },
   {
     q: 'Do I need an account to buy?',
-    a: 'No. Lemon Squeezy handles checkout — you just need a working email to receive the license key.',
+    a: 'No. Freemius handles checkout — you just need a working email to receive the license key.',
   },
   {
     q: 'Monthly vs lifetime: which one should I pick?',
@@ -202,17 +188,17 @@ useBuyStructuredData({
     },
     {
       name: 'Monthly Subscription',
-      price: '1.99',
+      price: '2.90',
       cadence: 'per month, 5-day free trial',
       description: 'Unlimited profiles, no reminder popup, up to 3 active devices',
-      url: LEMON_SQUEEZY.checkoutMonthly,
+      url: CHECKOUT.monthly,
     },
     {
       name: 'Lifetime License',
       price: '11.50',
       cadence: 'one-time payment',
       description: 'Unlimited profiles, no reminder popup, up to 5 active devices, lifetime updates',
-      url: LEMON_SQUEEZY.checkoutLifetime,
+      url: CHECKOUT.lifetime,
     },
   ],
   faqs,
