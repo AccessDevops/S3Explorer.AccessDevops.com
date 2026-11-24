@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { openReportIssue } = useReportIssue()
 import { PhGithubLogo } from '@phosphor-icons/vue'
 import { REPO } from '~/lib/constants'
 
@@ -60,7 +61,7 @@ const year = new Date().getFullYear()
               </a>
             </li>
             <li>
-              <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" class="hover:text-foreground">
+              <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" class="hover:text-foreground" @click="openReportIssue($event, 'footer')">
                 Report an issue
               </a>
             </li>

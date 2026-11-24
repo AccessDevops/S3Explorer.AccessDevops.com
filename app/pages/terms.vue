@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { openReportIssue } = useReportIssue()
 import { REPO, SITE } from '~/lib/constants'
 
 // The selling entity and the governing law are not stated here yet. Lemon
@@ -109,7 +110,7 @@ useHead({
       </p>
 
       <p>
-        Questions: <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer">open an issue on GitHub</a>.
+        Questions: <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" @click="openReportIssue($event, 'terms')">open an issue</a>.
       </p>
     </div>
   </div>

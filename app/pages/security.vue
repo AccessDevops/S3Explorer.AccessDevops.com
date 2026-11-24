@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { openReportIssue } = useReportIssue()
 import { REPO, SITE } from '~/lib/constants'
 
 // Where the credentials live and what the app talks to. This is as much a
@@ -93,7 +94,7 @@ useHead({
 
       <h2>Reporting a vulnerability</h2>
       <p>
-        <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
+        <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" @click="openReportIssue($event, 'security')">Open an issue</a>
         saying that you have found a security problem, without the details. We will answer
         and agree on a private channel before you share anything exploitable.
       </p>

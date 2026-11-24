@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { openReportIssue } = useReportIssue()
 import { REPO, SITE } from '~/lib/constants'
 
 // Who publishes the site and how the guides are made. Google's guidance on
@@ -83,7 +84,7 @@ useHead({
 
       <h2>Corrections and contact</h2>
       <p>
-        To report an error or a change at a provider, <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer">open an issue on GitHub</a>.
+        To report an error or a change at a provider, <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" @click="openReportIssue($event, 'about')">open an issue</a>.
         The source of this site is public in
         <a :href="`https://github.com/${REPO.org}/S3Explorer.AccessDevops.com`" target="_blank" rel="noopener noreferrer">its repository</a>.
       </p>

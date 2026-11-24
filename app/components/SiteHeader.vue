@@ -7,27 +7,10 @@ import { REPO, REPORT_ISSUE_URL } from '~/lib/constants'
 const { isDark, toggle } = useDarkMode()
 const mobileOpen = ref(false)
 
-// "Report issue" opens a dialog, but the triggers stay real links. Without JS
-// — and in the window before hydration — a link still reaches GitHub, which is
-// what happens today; a <button> would do nothing at all. preventDefault only
-// on a plain left click, so Cmd-click, middle-click and "open in new tab" keep
-// working.
-const reportOpen = ref(false)
-// Mounted on first open only: the dialog pulls in reka's Dialog, FocusScope,
-// DismissableLayer and Presence — ~14 kB gzip that would otherwise ship in the
-// layout chunk of all 36 pages for a dialog most visitors never open.
-const reportMounted = ref(false)
-const reportWhere = ref('header')
-const reportTrigger = ref<HTMLElement | null>(null)
+// One dialog for the whole site: the header mounts it, the footer and the
+// legal pages open it through the same shared state.
+const { open: reportOpen, mounted: reportMounted, where: reportWhere, trigger: reportTrigger, openReportIssue } = useReportIssue()
 
-function openReport(event: MouseEvent, where: string) {
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
-  event.preventDefault()
-  reportMounted.value = true
-  reportWhere.value = where
-  reportTrigger.value = event.currentTarget as HTMLElement
-  reportOpen.value = true
-}
 const route = useRoute()
 
 watch(() => route.path, () => {
@@ -88,7 +71,7 @@ const nav = [
           target="_blank"
           rel="noopener noreferrer"
           class="hidden md:inline-flex h-8 items-center gap-1.5 rounded-md border border-primary/30 bg-primary/5 px-3 text-xs font-medium text-primary transition-colors hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          @click="openReport($event, 'header')"
+          @click="openReportIssue($event, 'header')"
         >
           <PhBug :size="14" weight="bold" />
           <span>Report issue</span>
@@ -127,7 +110,7 @@ const nav = [
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 px-2 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          @click="openReport($event, 'mobile_menu')"
+          @click="openReportIssue($event, 'mobile_menu')"
         >
           <PhBug :size="14" />
           <span>Report issue</span>

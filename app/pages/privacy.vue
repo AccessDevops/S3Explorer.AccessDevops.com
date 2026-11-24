@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { openReportIssue } = useReportIssue()
 import { REPO, SITE } from '~/lib/constants'
 
 // What the app and this site send, in the terms a buyer would ask about.
@@ -110,7 +111,7 @@ useHead({
 
       <h2>Questions</h2>
       <p>
-        Ask by <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer">opening an issue on GitHub</a>.
+        Ask by <a :href="`${REPO.url}/issues`" target="_blank" rel="noopener noreferrer" @click="openReportIssue($event, 'privacy')">opening an issue</a>.
       </p>
     </div>
   </div>
