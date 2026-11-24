@@ -1,3 +1,5 @@
+import { copyToClipboard } from '~/lib/clipboard'
+
 const REFERRAL_ID_STORAGE_KEY = 's3e_referral_id'
 const REFERRAL_ID_PATTERN = /^s3e_[a-z0-9]{12}$/
 
@@ -15,57 +17,6 @@ function generateReferralId(): string {
     id += chars.charAt(bytes[i]! % chars.length)
   }
   return `s3e_${id}`
-}
-
-/** How the referral id reached the clipboard, or that it did not. */
-export type ClipboardMethod = 'async' | 'legacy' | 'failed'
-
-/**
- * Put the referral id on the clipboard without the visitor noticing.
- *
- * `navigator.clipboard.writeText` is the right API and works almost
- * everywhere, but it is refused outside a secure context, under some Firefox
- * configurations, and once the transient activation granted by the click has
- * lapsed. When it is refused the id still reaches PostHog and still shows in
- * the toast — it simply never reaches the desktop app, so the install that
- * follows cannot be tied back to this visit. That failure was silent.
- *
- * The fallback is the pre-Clipboard-API idiom: an off-screen textarea,
- * selected and copied synchronously. `document.execCommand` is deprecated but
- * implemented by every engine, and allowed in cases where the async API is
- * not — which is exactly when it is needed. It is not a second channel with
- * its own per-OS behaviour; it is the same clipboard written another way, and
- * it asks the visitor for nothing.
- */
-async function copyToClipboard(text: string): Promise<ClipboardMethod> {
-  try {
-    await navigator.clipboard.writeText(text)
-    return 'async'
-  }
-  catch {
-    // fall through to the legacy path
-  }
-
-  try {
-    const ta = document.createElement('textarea')
-    ta.value = text
-    // Off-screen rather than `display:none` or `hidden`: an unrendered
-    // element cannot hold a selection, so the copy would fail for the wrong
-    // reason. `readonly` keeps the mobile keyboard from appearing.
-    ta.setAttribute('readonly', '')
-    ta.style.position = 'fixed'
-    ta.style.top = '-9999px'
-    ta.style.opacity = '0'
-    document.body.appendChild(ta)
-    ta.select()
-    ta.setSelectionRange(0, text.length)
-    const ok = document.execCommand('copy')
-    document.body.removeChild(ta)
-    return ok ? 'legacy' : 'failed'
-  }
-  catch {
-    return 'failed'
-  }
 }
 
 function persistReferralId(rid: string) {
@@ -326,6 +277,16 @@ export function useDownloadTracking() {
     posthog?.capture('github_releases_opened', { where })
   }
 
+  /** Which channel someone picked in the "Report issue" dialog. One event
+   *  with a `channel` property rather than one per channel, like
+   *  `download_clicked` + `source_ui`. There is deliberately no "dialog
+   *  opened" or "dismissed" event: `update:open` fires on every close,
+   *  including the one that follows a choice, so a dismissal count would
+   *  double-count the very sessions that converted. */
+  function trackReportChannelChosen(channel: 'github' | 'email', where: string) {
+    posthog?.capture('report_channel_chosen', { channel, where })
+  }
+
   function trackVideoPlayed() {
     posthog?.capture('demo_video_played')
   }
@@ -373,6 +334,7 @@ export function useDownloadTracking() {
     trackDownloadClicked,
     trackAllPlatformsOpened,
     trackGithubReleasesOpened,
+    trackReportChannelChosen,
     trackVideoPlayed,
     trackBuyCtaClicked,
     trackNewsViewed,

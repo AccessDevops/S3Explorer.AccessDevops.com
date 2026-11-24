@@ -47,6 +47,32 @@ const ISSUE_TEMPLATE = `## Type of report
 <!-- Logs, related links, anything that adds context. -->
 `
 
+// First e-mail channel exposed on the site: there was no `mailto:` anywhere
+// before this. It is a Google Workspace group, open to external senders, so it
+// can be moderated or swapped without touching anything else here.
+export const SUPPORT_EMAIL = 's3explorer@accessdevops.com'
+
+// Same questions as the GitHub template above, cut to the few that save a
+// round-trip. Deliberately short and plain text: mail clients truncate long
+// mailto URLs (Outlook stops around 2048 characters) and markdown would be
+// rendered literally in a plain-text composer.
+const SUPPORT_EMAIL_BODY = `Type: bug / feature request / question
+
+S3 Explorer version:
+Operating system:
+S3 provider:
+
+What happened:
+
+
+What you expected:
+`
+
+export const SUPPORT_EMAIL_URL
+  = `mailto:${SUPPORT_EMAIL}`
+    + `?subject=${encodeURIComponent('S3 Explorer - issue report')}`
+    + `&body=${encodeURIComponent(SUPPORT_EMAIL_BODY)}`
+
 export const REPORT_ISSUE_URL
   = `${REPO.url}/issues/new?body=${encodeURIComponent(ISSUE_TEMPLATE)}`
 
