@@ -70,6 +70,21 @@
   status = 301
   force = true
 
+# /about-us never existed on this site but still receives visitors (PostHog,
+# November 2026: 3 entries in 30 days, all on the 404 page). Some external
+# link uses that path; sending it to /about/ keeps the visit and the link.
+[[redirects]]
+  from = "/about-us"
+  to = "/about/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about-us/"
+  to = "/about/"
+  status = 301
+  force = true
+
 # Only these three surfaces still need the Nitro function: the release feed,
 # the Lemon Squeezy webhook, and the sitemap (generated at request time by
 # @nuxtjs/sitemap). Every page is prerendered and served from the CDN.
