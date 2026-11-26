@@ -90,9 +90,11 @@ useHead({
       <p>
         Licences are sold by
         <a href="https://freemius.com/" target="_blank" rel="noopener noreferrer">Freemius</a>
-        as merchant of record. They handle payment, invoicing, tax and refunds under their own
+        as <a href="https://freemius.com/merchant-of-record/" target="_blank" rel="noopener noreferrer">merchant of record</a>.
+        They handle payment, invoicing, tax and refunds under their own
         terms, and their receipt is your proof of purchase. A purchase can be refunded within
-        14 days.
+        14 days. Checkout is also subject to the Freemius terms shown at the time of purchase.
+        Providing S3 Explorer and its support stays with us, under these terms.
       </p>
 
       <h2>Warranty</h2>

@@ -103,7 +103,7 @@ useHead({
         Payment is handled by
         <a href="https://freemius.com/" target="_blank" rel="noopener noreferrer">Freemius</a>,
         who sell the licence as merchant of record and hold your billing details under their
-        own privacy policy. We never see your card number. When the app checks that a licence
+        <a href="https://freemius.com/privacy/" target="_blank" rel="noopener noreferrer">own privacy policy</a>. We never see your card number. When the app checks that a licence
         is valid, it sends the licence key and a device identifier to Freemius so the same key
         cannot be used on an unlimited number of machines. That identifier is a hash computed
         from the machine identifier, not the identifier itself.
